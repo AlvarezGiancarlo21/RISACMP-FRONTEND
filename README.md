@@ -1,6 +1,6 @@
-# Vuetify (Default)
+# RISACMP-FRONTEND
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+Proyecto para la empresa rudani para la gestion de almacenes y produccion de una planta.
 
 ## ❗️ Important Links
 
@@ -12,7 +12,7 @@ This is the official scaffolding tool for Vuetify, designed to give you a head s
 
 ## 💿 Install
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+Configure su proyecto utilizando su administrador de paquetes preferido. Utilice el comando correspondiente para instalar las dependencias:
 
 | Package Manager                                                | Command        |
 |---------------------------------------------------------------|----------------|
@@ -21,9 +21,9 @@ Set up your project using your preferred package manager. Use the corresponding 
 | [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
 | [bun](https://bun.sh/#getting-started)                        | `bun install`  |
 
-After completing the installation, your environment is ready for Vuetify development.
+Después de completar la instalación, su entorno estará listo para el desarrollo de Vuetify.
 
-## ✨ Features
+## ✨ Características
 
 - 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
 - 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
@@ -39,10 +39,10 @@ This section covers how to start the development server and build your project f
 
 ### Starting the Development Server
 
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+Para iniciar el servidor de desarrollo con recarga en caliente, ejecute el siguiente comando. El servidor será accesible en [http://localhost:3849](http://localhost:3849):
 
 ```bash
-yarn dev
+npm run dev
 ```
 
 (Repeat for npm, pnpm, and bun with respective commands.)
@@ -51,19 +51,19 @@ yarn dev
 
 ### Building for Production
 
-To build your project for production, use:
+Para construir su proyecto para producción, use:
 
 ```bash
-yarn build
+npm run build
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+(Repita para npm, pnpm y bun con los comandos respectivos).
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
+Una vez que se complete el proceso de compilación, su aplicación estará lista para su implementación en un entorno de producción.
 
 ## 💪 Support Vuetify Development
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+Este proyecto está construido con [Vuetify](https://vuetifyjs.com/en/), una biblioteca de interfaz de usuario con una colección completa de componentes de Vue. Vuetify es un proyecto de código abierto con licencia del MIT que ha sido posible gracias a las generosas contribuciones de nuestros [patrocinadores y patrocinadores] (https://vuetifyjs.com/introduction/sponsors-and-backers/). Si está interesado en apoyar este proyecto, considere:
 
 - [Requesting Enterprise Support](https://support.vuetifyjs.com/)
 - [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
@@ -76,5 +76,5 @@ This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library wi
 ## 📑 License
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2016-present Vuetify, LLC
+Copyright (c) 2024 RISACMP, LLC
 # RISACMP-FRONTEND
