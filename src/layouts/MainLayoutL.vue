@@ -10,9 +10,9 @@
       >
       <v-list >
           <v-list-item class="item"
-            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-            subtitle="sandra_a88@gmailcom"
-            title="Sandra Adams"
+            prepend-avatar="/src/assets/user.png"
+            subtitle="201920420@urp.edu.pe"
+            title="Giancarlo Alvarez"
           ></v-list-item>
       </v-list>
 
@@ -29,10 +29,10 @@
           <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-home-city" title="Principal" value="home" ></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-folder-multiple" title="Servicios" value="services"  ></v-list-item>
-          <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Users" value="users" ></v-list-item>
+          <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Users" value="users" to="/dashboard/users"></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-logout" title="Salir" value="signout"  ></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-home-city" title="Inicio" value="home" ></v-list-item>
-          <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" ></v-list-item>
+          <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users"></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
         </v-list>
