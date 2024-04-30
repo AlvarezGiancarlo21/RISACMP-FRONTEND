@@ -9,6 +9,14 @@
         class="navigation-drawer"
       >
       <v-list >
+          <v-list-item>
+            <v-img
+  :width="300"
+  aspect-ratio="4/3"
+  cover
+  src="/src//assets/Imagenes/logo5.jpeg"
+></v-img>
+          </v-list-item>
           <v-list-item class="item"
             prepend-avatar="/src/assets/user.png"
             subtitle="201920420@urp.edu.pe"
@@ -24,7 +32,8 @@
           density="compact"
           nav
         >
-          <v-list-item class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="dashboard" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
+          <v-list-item class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="messages"></v-list-item>
+          <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="dashboard" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
 
           <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-home-city" title="Principal" value="home" ></v-list-item>
@@ -48,11 +57,11 @@
       <!--Drawer 2-->
       <v-navigation-drawer permanent v-model="drawer2" style="background-color:aliceblue;" @mouseenter="cancelHideTimer()" @mouseleave="startHideTimer()">
         <v-list  density="compact" nav>
-          <v-list-item title="Opcion 1" value="home" prepend-icon="mdi-home" ></v-list-item>
+          <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" ></v-list-item>
 
-          <v-list-item title="Opcion 2" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
+          <v-list-item title="Materia Prima" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
 
-          <v-list-item title="Opcion 3" value="settings" prepend-icon="mdi-cog"></v-list-item>
+          <v-list-item title="Inventario" value="settings" prepend-icon="mdi-cog"></v-list-item>
         </v-list>
       </v-navigation-drawer>
 
