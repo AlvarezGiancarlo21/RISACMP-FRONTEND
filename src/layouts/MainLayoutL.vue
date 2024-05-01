@@ -14,13 +14,15 @@
   :width="300"
   aspect-ratio="4/3"
   cover
-  src="/src//assets/Imagenes/logo5.jpeg"
+  src="/src//assets/Imagenes/logo5.png"
 ></v-img>
           </v-list-item>
           <v-list-item class="item"
             prepend-avatar="/src/assets/user.png"
             subtitle="201920420@urp.edu.pe"
             title="Giancarlo Alvarez"
+            style="background-color: #fff; color: #000; padding: 15px;"
+            to="/dashboard/account"
           ></v-list-item>
       </v-list>
 
@@ -35,13 +37,13 @@
           <v-list-item class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="messages"></v-list-item>
           <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="dashboard" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
 
-          <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item>
+          <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
           <v-list-item class="item" prepend-icon="mdi-home-city" title="Principal" value="home" ></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-folder-multiple" title="Servicios" value="services"  ></v-list-item>
-          <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Users" value="users" to="/dashboard/users"></v-list-item>
+          <!-- <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Users" value="users" to="/dashboard/users"></v-list-item> -->
           <v-list-item class="item" prepend-icon="mdi-logout" title="Salir" value="signout"  ></v-list-item>
-          <v-list-item class="item" prepend-icon="mdi-home-city" title="Inicio" value="home" ></v-list-item>
-          <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item>
+          <!-- <v-list-item class="item" prepend-icon="mdi-home-city" title="Inicio" value="home" ></v-list-item> -->
+          <!-- <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item> -->
           <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users"></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
         </v-list>

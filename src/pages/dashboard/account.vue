@@ -3,15 +3,16 @@
   <div class="container-config-user">
     <h2>Configuración de usuario</h2>
     <div class="fields-config-user">
-      <div class="input-foto" id="hoverarea">
-        <div id="machine">
-          <img src="../../../public/tu_imagen_inicial.jpg" alt="foto_perfil">
+      <div class="input-foto">
+        <div>
+          <img src="../../assets/user.png" alt="foto_perfil">
         </div>
-        <div class="container-input-foto-icono">
+        <button class="container-input-foto-icono" id="attachment" onclick="abrirArchivo">
           <div class="input-foto-icono">
-          <img  src="../../../public/camara.png" alt="">
+          <img  src="../../assets/camara.png" alt="">
         </div>
-        </div>
+        <!-- <v-file-input></v-file-input> -->
+        </button>
       </div>
       <v-row>
         <v-col cols="12"
@@ -113,12 +114,8 @@
   }
 </style>
 
-<!-- <script>
-const hoverArea = document.getElementById('hoverarea');
-const machine = document.getElementById('machine');
-const newImageSrc = '../../../public/tu_imagen_inicial.jpg';
-
-hoverArea.addEventListener('click', () => {
-  machine.querySelector('img').src = newImageSrc;
-});
-</script> -->
+<script>
+    function abrirArchivo() {
+      document.getElementById("file-input").click();
+    }
+</script>
