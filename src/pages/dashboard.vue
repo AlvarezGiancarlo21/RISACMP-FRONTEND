@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <MainLayoutL/>
+  <UserLayout/>
 </template>
 <script setup>
-import MainLayoutL from '@/layouts/MainLayoutL.vue';
+import UserLayout from '@/layouts/UserLayout.vue';
 </script>
