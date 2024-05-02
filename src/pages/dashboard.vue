@@ -15,14 +15,11 @@ const userStore = useUserStore(); // Usa el hook useUserStore para obtener acces
 const layoutComponent = computed(() => {
   const role = userStore.user?.role; // Obtiene el rol del usuario desde el store de usuario
   switch (role) {
-    case "Usuario":
-      console.log(role)
+    case "Calidad":
       return CalidadLayout; // Componente para usuario de calidad
-    case "Jefe de Planta":
-      console.log(role)
+    case "Jefe_de_Planta":
       return JefePlantaLayout; // Componente para jefe de planta (administrador)
     default:
-    console.log(role)
       return UsuarioLayout; // Componente para usuarios comunes
   }
 });

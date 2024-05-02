@@ -80,7 +80,8 @@
 
 <script>
 import axios from 'axios';
-
+import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el token JWT
+import { useUserStore } from '@/stores/User'; // Importa el hook useUserStore para acceder al store de usuario Pinia
 export default {
   data() {
     return {
@@ -99,22 +100,46 @@ export default {
           password: this.password,
         });
 
-        if (response.status === 200) {
-          // Si el inicio de sesión fue exitoso, redirige al usuario a la página de dashboard
-          this.$router.push('/dashboard');
-          console.log(this.username, this.password)
-        } else {
-          // Si el inicio de sesión falló, muestra un mensaje de error utilizando el diálogo
-          this.errorMessage = response.data.msg || 'Credenciales incorrectas. Inténtalo de nuevo.';
-          this.dialogError = true;
-        }
+        // Maneja la respuesta del inicio de sesión
+        this.handleLoginResponse(response);
+        console.log('Response from server:', response); // Imprime la respuesta completa del servidor
       } catch (error) {
         console.error('Error al iniciar sesión:', error);
-        // Si ocurre un error durante la solicitud, muestra un mensaje de error utilizando el diálogo
+        // Muestra un mensaje de error utilizando el diálogo
         this.errorMessage = 'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';
         this.dialogError = true;
       }
     },
+
+    handleLoginResponse(response) {
+      console.log('Response:', response); // Verifica la respuesta del backend
+      if (response.status === 200) {
+        const token = response.data.token;
+        console.log('Token:', token); // Verifica el token recibido
+
+        const decodedToken = jwt_decode(token);
+        console.log('Decoded Token:', decodedToken); // Verifica el objeto decodificado
+
+        // Verifica que el objeto decodificado esté definido y contenga la propiedad 'user'
+        if (decodedToken && decodedToken.user) {
+          const role = decodedToken.user.role;
+          console.log('User Role:', role); // Verifica el rol del usuario extraído del token
+          const userStore = useUserStore(); // Accede al store de usuario Pinia
+          userStore.setUserRole(role); // Actualiza el estado del usuario con el rol
+          this.$router.push('/dashboard');
+        } else {
+          console.error('Token JWT inválido: no se encontró la propiedad "user" en el token decodificado.');
+          this.errorMessage = 'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';
+          this.dialogError = true;
+        }
+      } else {
+        this.errorMessage = response.data.msg || 'Credenciales incorrectas. Inténtalo de nuevo.';
+        this.dialogError = true;
+      }
+    },
+
+
+
     required(v) {
       return !!v || 'Este campo es requerido';
     },
