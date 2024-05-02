@@ -24,6 +24,9 @@
             style="background-color: #fff; color: #000; padding: 15px;"
             to="/dashboard/account"
           ></v-list-item>
+          <v-list-item>
+            <p style="color: #fff">Dashboard Usuario</p>
+          </v-list-item>
       </v-list>
 
         <v-divider></v-divider>

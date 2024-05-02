@@ -24,19 +24,22 @@
               style="background-color: #fff; color: #000; padding: 15px;"
               to="/dashboard/account"
             ></v-list-item>
+            <v-list-item>
+            <p style="color: #fff">Dashboard Jefe de planta</p>
+          </v-list-item>
         </v-list>
-  
+
           <v-divider></v-divider>
-  
+
           <v-divider></v-divider>
-  
+
           <v-list
             density="compact"
             nav
           >
             <v-list-item class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="messages"></v-list-item>
             <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="dashboard" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
-  
+
             <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
             <v-list-item class="item" prepend-icon="mdi-home-city" title="Principal" value="home" ></v-list-item>
             <v-list-item class="item" prepend-icon="mdi-folder-multiple" title="Servicios" value="services"  ></v-list-item>
@@ -55,21 +58,21 @@
             </div>
           </template>
         </v-navigation-drawer>
-  
+
         <!--Drawer 2-->
         <v-navigation-drawer permanent v-model="drawer2" style="background-color:aliceblue;" @mouseenter="cancelHideTimer()" @mouseleave="startHideTimer()">
           <v-list  density="compact" nav>
             <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" ></v-list-item>
-  
+
             <v-list-item title="Materia Prima" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
-  
+
             <v-list-item title="Inventario" value="settings" prepend-icon="mdi-cog"></v-list-item>
           </v-list>
         </v-navigation-drawer>
-  
-  
-  
-  
+
+
+
+
       <!--------------------------->
       <!--------------------------->
       <!----Barra de navegcion----->
@@ -89,12 +92,12 @@
           >
         </v-btn>
         </template>
-  
+
         <template v-slot:append>
-  
+
           <v-btn icon="mdi-view-quilt"></v-btn>
-  
-  
+
+
           <v-btn
               class="ml-2"
               min-width="0"
@@ -110,39 +113,39 @@
       </v-layout>
     </v-app>
   </template>
-  
-  
+
+
   <script setup>
   import { ref } from 'vue';
-  
+
   // Variables reactivas
-  
+
   let hideTimer;
   const drawer1=ref(true);
   const drawer2=ref(false);
-  
-  
+
+
   // Funciones
   const showDrawer2 = () => {
     drawer2.value = true;
   };
-  
+
   const hideDrawer2 = () => {
     hideTimer = setTimeout(() => {
       drawer2.value = false;
     }, 50); // 500ms de retraso
   };
-  
+
   const startHideTimer = () => {
     hideTimer = setTimeout(() => {
       drawer2.value = false;
     }, 50); // 500ms de retraso
   };
-  
+
   const cancelHideTimer = () => {
     clearTimeout(hideTimer);
   };
-  
+
   </script>
   <style scoped>
     .navigation-drawer{
@@ -155,4 +158,3 @@
       background-color: #3d5252;
     }
   </style>
-  
