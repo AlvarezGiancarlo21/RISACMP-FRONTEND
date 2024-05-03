@@ -7,11 +7,12 @@ export const useUserStore = defineStore('user', {
 
   }),
   actions: {
-    setUserRole(role) {
+    setUserRole(role,username) {
       this.user.role = role;
+      this.user.username=username;
     },
-    setUserUsername(username){
-      this.username=username;
-    },
+    // setUserUsername(username){
+
+    // },
   },
 });

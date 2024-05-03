@@ -122,9 +122,7 @@ export default {
 
           console.log('User Role:', role);
           console.log('Username:', username);
-          this.userStore.setUserRole(role); // Utiliza la referencia al store de usuario
-          this.userStore.setUserUsername(username);
-
+          this.userStore.setUserRole(role,username); // Utiliza la referencia al store de usuario
           this.$router.push('/dashboard');
         } else {
           console.error('Token JWT inválido: no se encontró la propiedad "user" en el token decodificado.');

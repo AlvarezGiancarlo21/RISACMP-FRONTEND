@@ -19,17 +19,21 @@
           </v-list-item>
           <v-list-item class="item"
             prepend-avatar="/src/assets/user.png"
-            subtitle="201920420@urp.edu.pe"
             :title="username"
             style="background-color: #fff; color: #000; padding: 15px;"
             to="/dashboard/account"
-          ></v-list-item>
+          >
+          <v-list-item>
+            <p style="color: black;">{{ user }}</p>
+          </v-list-item>
+          <v-list-item>
+            <p style="color: black">{{ role }}</p>
+          </v-list-item>
+        </v-list-item>
           <v-list-item>
             <p style="color: #fff">Dashboard Usuario</p>
           </v-list-item>
-          <v-list-item>
-            <p style="color: #fff">Rol: {{ role }}</p>
-          </v-list-item>
+
       </v-list>
 
         <v-divider></v-divider>
@@ -134,7 +138,7 @@ import { computed } from 'vue';
 const userStore = useUserStore();
 
 // Define referencias reactivas para username y role
-const username = computed(() => userStore.user.user);
+const user = computed(() => userStore.user.username);
 const role = computed(() => userStore.user.role);
 // Variables reactivas
 
