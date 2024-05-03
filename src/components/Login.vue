@@ -112,6 +112,7 @@ export default {
       console.log('Response:', response);
       if (response.status === 200) {
         const token = response.data.token;
+        console.log(token);
         const decodedToken = jwt_decode(token);
         console.log('Decoded Token:', decodedToken);
         if (decodedToken && decodedToken.user) {

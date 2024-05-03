@@ -134,7 +134,7 @@ import { computed } from 'vue';
 const userStore = useUserStore();
 
 // Define referencias reactivas para username y role
-const username = computed(() => userStore.user.username);
+const username = computed(() => userStore.user.user);
 const role = computed(() => userStore.user.role);
 // Variables reactivas
 
