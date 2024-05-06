@@ -46,6 +46,13 @@
           <v-list-item  class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="dashboard" to="/dashboard/home"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta' || role === 'Jefe de Produccion' || role === 'Encargado de Produccion'" class="item" prepend-icon="mdi-factory" title="Produccion" @mouseover="showDrawerProduccion()" @mouseleave="hideDrawerProduccion()"></v-list-item>
           <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="products" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
+
+          <!--Rol Logistico-->
+          <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-account-tie" title="Provedores" to="/dashboard/gestionar-provedores" ></v-list-item>
+          <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-list-box" title="Facturas" to="/dashboard/gestion-facturas" ></v-list-item>
+          <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-credit-card-edit" title="Nota de Credito" to="/dashboard/nota-de-credito" ></v-list-item>
+          <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-shopping" title="Ordenes de Compra" to="/dashboard/ordenes-compras" ></v-list-item>
+          <!----------------->
           <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Validar Prductos" to="/dashboard/validar-productos"></v-list-item>
           <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
           <!-- <v-list-item v-if="role === 'Jefe de Planta'"  class="item" prepend-icon="mdi-home-city" title="Funcionalidad Jefe" value="home" ></v-list-item> -->
