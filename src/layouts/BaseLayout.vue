@@ -44,7 +44,7 @@
           nav
         >
           <v-list-item  class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="dashboard" to="/dashboard/home"></v-list-item>
-          <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-factory" title="Produccion" @mouseover="showDrawerProduccion()" @mouseleave="hideDrawerProduccion()"></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta' || role === 'Jefe de Produccion' || role === 'Encargado de Produccion'" class="item" prepend-icon="mdi-factory" title="Produccion" @mouseover="showDrawerProduccion()" @mouseleave="hideDrawerProduccion()"></v-list-item>
           <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="products" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
           <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Validar Prductos" to="/dashboard/validar-productos"></v-list-item>
           <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
@@ -83,9 +83,22 @@
         <!--Drawer expandido Produccion-->
       <v-navigation-drawer permanent v-model="drawerProduccion" style="background-color:aliceblue;" @mouseenter="cancelHideTimerDrawerProduccion()" @mouseleave="startHideTimerDrawerProduccion()">
         <v-list  density="compact" nav>
-          <v-list-item title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" to="/dashboard/autorizar-produccion"></v-list-item>
+          <!--Jefe de Planta-->
+          <v-list-item v-if="role === 'Jefe de Planta'" title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" to="/dashboard/autorizar-produccion"></v-list-item>
 
-          <v-list-item title="Consultar Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion"></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta'" title="Consultar Lista Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion" ></v-list-item>
+
+          <!--Jefe de Produccion-->
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-receta" title="Visualizar Recetas" value="vRecetas" prepend-icon="mdi-chef-hat" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-historico" title="Visualizar Historico" value="vHistorico" prepend-icon="mdi-history" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-planta" title="Gestionar Planta" value="gestionarPlanta" prepend-icon="mdi-factory" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/consultar-stock" title="Consultar Stock" value="cStock" prepend-icon="mdi-list-status" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/consultar-reporte-merma" title="Consultar Reporte de Merma" value="cReporteMerma" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
+
+          <!--Encargado de Produccion-->
+          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/materia-prima" title="Materia Prima" value="mPrima" prepend-icon="mdi-food-steak" ></v-list-item>
+          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/productos-terminados" title="Productos Terminados" value="pTerminados" prepend-icon="mdi-package-variant-closed-check" ></v-list-item>
+          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/registrar-merma" title="Registrar Merma" value="rMerma" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
         </v-list>
       </v-navigation-drawer>
 

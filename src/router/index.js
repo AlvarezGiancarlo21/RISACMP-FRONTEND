@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
       // El usuario no está autenticado, se mantiene en el login
       next();
     }
-  } else if (to.path === '/dashboard/home') {
+  } else if (to.path === '/dashboard') {
     const token = localStorage.getItem('token');
     if (!token) {
       // El usuario no está autenticado, redirige al login
