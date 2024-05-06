@@ -44,11 +44,11 @@
           density="compact"
           nav
         >
-          <v-list-item class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="messages"></v-list-item>
+          <v-list-item  class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="messages"></v-list-item>
           <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="dashboard" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
 
           <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
-          <v-list-item class="item" prepend-icon="mdi-home-city" title="Principal" value="home" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta'"  class="item" prepend-icon="mdi-home-city" title="Funcionalidad Jefe" value="home" ></v-list-item>
           <v-list-item class="item" prepend-icon="mdi-folder-multiple" title="Servicios" value="services"  ></v-list-item>
           <!-- <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Users" value="users" to="/dashboard/users"></v-list-item> -->
           <v-list-item class="item" prepend-icon="mdi-logout" title="Salir" value="signout"  ></v-list-item>
@@ -135,7 +135,18 @@ const user = computed(() => userStore.user.username);
 const role = computed(() => userStore.user.role);
 // Variables reactivas
 
+// Define referencias reactivas para username y role
 
+
+// Recuperar la información de sesión del usuario cuando el componente se monta
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    // Decodificar el token para obtener la información del usuario
+    const decodedToken = jwt_decode(token);
+    role.value = decodedToken.user.role;
+  }
+});
 
 
 
