@@ -19,6 +19,7 @@ const layoutComponent = computed(() => {
       return CalidadLayout; // Componente para usuario de calidad
     case "Jefe de Planta":
       return JefePlantaLayout; // Componente para jefe de planta (administrador)
+
     default:
       return UsuarioLayout; // Componente para usuarios comunes
   }
