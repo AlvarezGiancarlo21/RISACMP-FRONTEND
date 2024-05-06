@@ -161,7 +161,9 @@ handleLoginResponse(response) {
       console.log('Telefono :',telefono);
       console.log('Sexo :',sexo)
       this.userStore.setUserRole(role, username,nombres,apellidos,tipoDocumento,numeroDocumento,telefono,sexo); // Utiliza la referencia al store de usuario
-      this.$router.push('/dashboard');
+      this.$router.push('/dashboard/home');
+
+
     } else {
       console.error('Token JWT inválido: no se encontró la propiedad "user" en el token decodificado.');
       this.errorMessage = 'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';

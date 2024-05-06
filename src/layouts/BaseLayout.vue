@@ -124,8 +124,8 @@
         </v-btn>
       </template>
     </v-app-bar>
-      <v-main class="d-flex align-center justify-center" style="max-height: auto;">
-        <router-view />
+      <v-main class="d-flex align-center justify-center" style="max-height: auto;" >
+        <router-view/>
       </v-main>
     </v-layout>
   </v-app>
