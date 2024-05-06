@@ -75,6 +75,29 @@
         </div>
       </div>
     </div>
+    <!--Dialogo de contraseña incorrecta-->
+    <v-dialog
+      v-model="dialogError"
+      width="auto"
+    >
+      <v-card
+        max-width="400"
+        prepend-icon="mdi-message-alert-outline"
+        text="Los datos de autenticación introducidos son incorrectos.Inténtelo de nuevo."
+        title="Error de autenticación"
+      >
+        <template v-slot:actions>
+          <v-btn
+            class="ms-auto"
+            text="Ok"
+            @click="dialogError = false"
+          ></v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
+
+
+
   </v-parallax>
 </template>
 
