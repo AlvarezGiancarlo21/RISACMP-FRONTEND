@@ -108,38 +108,37 @@ export default {
         this.dialogError = true;
       }
     },
-    handleLoginResponse(response) {
-      console.log('Response:', response);
-      if (response.status === 200) {
-        const token = response.data.token;
-        console.log(token);
-        const decodedToken = jwt_decode(token);
-        console.log('Decoded Token:', decodedToken);
-        if (decodedToken && decodedToken.user) {
-          const role = decodedToken.user.role;
-          const username = decodedToken.user.username;
+// Dentro de handleLoginResponse en tu componente de login
+
+handleLoginResponse(response) {
+  console.log('Response:', response);
+  if (response.status === 200) {
+    const token = response.data.token;
+    console.log(token);
+    const decodedToken = jwt_decode(token);
+    console.log('Decoded Token:', decodedToken);
+    if (decodedToken && decodedToken.user) {
+      const role = decodedToken.user.role;
+      const username = decodedToken.user.username;
 
       // Guardar el token en el almacenamiento local
       localStorage.setItem('token', token);
 
-      // Guardar el rol y el nombre de usuario en el store de Pinia
-      this.userStore.setUserRole(role, username);
-
-      // Redirigir al usuario al dashboard
+      console.log('User Role:', role);
+      console.log('Username:', username);
+      this.userStore.setUserRole(role, username); // Utiliza la referencia al store de usuario
       this.$router.push('/dashboard');
+    } else {
+      console.error('Token JWT inválido: no se encontró la propiedad "user" en el token decodificado.');
+      this.errorMessage = 'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';
+      this.dialogError = true;
+    }
+  } else {
+    this.errorMessage = response.data.msg || 'Credenciales incorrectas. Inténtalo de nuevo.';
+    this.dialogError = true;
+  }
+},
 
-          console.log('User Role:', role);
-          console.log('Username:', username);
-        } else {
-          console.error('Token JWT inválido: no se encontró la propiedad "user" en el token decodificado.');
-          this.errorMessage = 'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';
-          this.dialogError = true;
-        }
-      } else {
-        this.errorMessage = response.data.msg || 'Credenciales incorrectas. Inténtalo de nuevo.';
-        this.dialogError = true;
-      }
-    },
     mounted() {
   const token = localStorage.getItem('token');
   if (token) {

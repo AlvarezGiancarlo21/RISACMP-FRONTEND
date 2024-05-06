@@ -124,23 +124,39 @@
 
 <script setup>
 import { ref } from 'vue';
-
-//Para mostrar el usuario y rol
 import { useUserStore } from '@/stores/User';
 import { computed } from 'vue';
-
-// const userStore = useUserStore();
-// const username = userStore.user.username;
-// const role = userStore.user.role;
-
-
-// Accede al store de usuario
+import { onMounted } from 'vue';
+import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el token JWT
 const userStore = useUserStore();
 
 // Define referencias reactivas para username y role
 const user = computed(() => userStore.user.username);
 const role = computed(() => userStore.user.role);
 // Variables reactivas
+
+
+
+
+
+// Recuperar la información de sesión del usuario cuando el componente se monta
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    // Decodificar el token para obtener la información del usuario
+    const decodedToken = jwt_decode(token);
+    const role = decodedToken.user.role;
+    const username = decodedToken.user.username;
+
+    // Establecer la información del usuario en el store
+    userStore.setUserRole(role, username);
+  }
+});
+
+
+
+
+
 
 let hideTimer;
 const drawer1=ref(true);
@@ -149,6 +165,8 @@ const drawer2=ref(false);
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+
 
 // Función para cerrar sesión
 const logout = () => {
