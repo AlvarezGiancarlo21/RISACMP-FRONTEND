@@ -43,6 +43,7 @@
           nav
         >
           <v-list-item  class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="dashboard" to="/dashboard/home"></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-factory" title="Produccion" @mouseover="showDrawerProduccion()" @mouseleave="hideDrawerProduccion()"></v-list-item>
           <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="products" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
 
           <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
@@ -54,6 +55,7 @@
           <!-- <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item> -->
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users" to="/dashboard/gestionar-usuarios"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
+
           <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Funcionalidad Calidad"></v-list-item>
         </v-list>
         <template v-slot:append>
@@ -65,7 +67,7 @@
         </template>
       </v-navigation-drawer>
 
-      <!--Drawer 2-->
+      <!--Drawer expandido Productos-->
       <v-navigation-drawer permanent v-model="drawer2" style="background-color:aliceblue;" @mouseenter="cancelHideTimer()" @mouseleave="startHideTimer()">
         <v-list  density="compact" nav>
           <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" ></v-list-item>
@@ -76,6 +78,14 @@
         </v-list>
       </v-navigation-drawer>
 
+        <!--Drawer expandido Produccion-->
+      <v-navigation-drawer permanent v-model="drawerProduccion" style="background-color:aliceblue;" @mouseenter="cancelHideTimerDrawerProduccion()" @mouseleave="startHideTimerDrawerProduccion()">
+        <v-list  density="compact" nav>
+          <v-list-item title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" ></v-list-item>
+
+          <v-list-item title="Consultar Produccion" value="consultarProd" prepend-icon="mdi-format-list-group"></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
 
 
 
@@ -171,6 +181,7 @@ onMounted(() => {
 let hideTimer;
 const drawer1=ref(true);
 const drawer2=ref(false);
+const drawerProduccion=ref(false)
 
 import { useRouter } from 'vue-router';
 
@@ -189,7 +200,30 @@ const logout = () => {
 };
 
 
-// Funciones
+// Funciones drawer Produccion
+const showDrawerProduccion = () => {
+  drawerProduccion.value = true;
+};
+
+const hideDrawerProduccion = () => {
+  hideTimer = setTimeout(() => {
+    drawerProduccion.value = false;
+  }, 50); // 500ms de retraso
+};
+
+const startHideTimerDrawerProduccion = () => {
+  hideTimer = setTimeout(() => {
+    drawerProduccion.value = false;
+  }, 50); // 500ms de retraso
+};
+
+const cancelHideTimerDrawerProduccion = () => {
+  clearTimeout(hideTimer);
+};
+
+
+
+// Funciones drawer 2 ==>Productos
 const showDrawer2 = () => {
   drawer2.value = true;
 };
