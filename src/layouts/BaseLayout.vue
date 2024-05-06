@@ -54,8 +54,8 @@
           <v-list-item class="item" prepend-icon="mdi-logout" title="Salir" value="signout"  ></v-list-item>
           <!-- <v-list-item class="item" prepend-icon="mdi-home-city" title="Inicio" value="home" ></v-list-item> -->
           <!-- <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item> -->
-          <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users"></v-list-item>
-          <v-list-item class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users"></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
         </v-list>
         <template v-slot:append>
           <div class="pa-2" >
