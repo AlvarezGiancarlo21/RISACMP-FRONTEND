@@ -119,11 +119,17 @@ export default {
           const role = decodedToken.user.role;
           const username = decodedToken.user.username;
 
+      // Guardar el token en el almacenamiento local
+      localStorage.setItem('token', token);
+
+      // Guardar el rol y el nombre de usuario en el store de Pinia
+      this.userStore.setUserRole(role, username);
+
+      // Redirigir al usuario al dashboard
+      this.$router.push('/dashboard');
 
           console.log('User Role:', role);
           console.log('Username:', username);
-          this.userStore.setUserRole(role,username); // Utiliza la referencia al store de usuario
-          this.$router.push('/dashboard');
         } else {
           console.error('Token JWT inválido: no se encontró la propiedad "user" en el token decodificado.');
           this.errorMessage = 'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';
@@ -134,6 +140,15 @@ export default {
         this.dialogError = true;
       }
     },
+    mounted() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    // Establecer el token en el store de Pinia
+    this.userStore.setToken(token);
+    // Redirigir al usuario al dashboard
+    this.$router.push('/dashboard');
+  }
+},
     required(v) {
       return !!v || 'Este campo es requerido';
     },
