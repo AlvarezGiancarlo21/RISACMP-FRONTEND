@@ -56,6 +56,7 @@
           <!-- <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item> -->
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
+          <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Funcionalidad Calidad"></v-list-item>
         </v-list>
         <template v-slot:append>
           <div class="pa-2" >
