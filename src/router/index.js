@@ -18,12 +18,12 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('token');
     if (token) {
       // El usuario está autenticado, redirige al dashboard
-      next('/dashboard');
+      next('/dashboard/home');
     } else {
       // El usuario no está autenticado, se mantiene en el login
       next();
     }
-  } else if (to.path === '/dashboard') {
+  } else if (to.path === '/dashboard/home') {
     const token = localStorage.getItem('token');
     if (!token) {
       // El usuario no está autenticado, redirige al login

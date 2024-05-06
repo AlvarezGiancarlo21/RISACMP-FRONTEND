@@ -15,6 +15,6 @@ const router = useRouter();
 const token = localStorage.getItem('token');
 if (token) {
   // El token existe, redirige al dashboard
-  router.replace('/dashboard');
+  router.replace('/dashboard/home');
 }
 </script>

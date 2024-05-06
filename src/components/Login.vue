@@ -181,7 +181,7 @@ handleLoginResponse(response) {
     // Establecer el token en el store de Pinia
     this.userStore.setToken(token);
     // Redirigir al usuario al dashboard
-    this.$router.push('/dashboard');
+    this.$router.push('/dashboard/home');
   }
 },
     required(v) {
