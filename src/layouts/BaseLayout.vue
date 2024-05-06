@@ -19,13 +19,14 @@
           </v-list-item>
           <v-list-item class="item"
             prepend-avatar="/src/assets/user.png"
-            :title="username"
+            :title="nombres"
+            :subtitle="apellidos"
             style="background-color: #fff; color: #000; padding: 15px;"
             to="/dashboard/account"
           >
-          <v-list-item>
+          <!-- <v-list-item>
             <p style="color: black;">{{ user }}</p>
-          </v-list-item>
+          </v-list-item> -->
           <v-list-item>
             <p style="color: black">{{ role }}</p>
           </v-list-item>
@@ -140,22 +141,24 @@ import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el
 const userStore = useUserStore();
 
 // Define referencias reactivas para username y role
-const user = computed(() => userStore.user.username);
+// const user = computed(() => userStore.user.username);
 const role = computed(() => userStore.user.role);
+const nombres=computed(()=> userStore.user.nombres);
+const apellidos=computed(()=>userStore.user.apellidos);
 // Variables reactivas
 
 // Define referencias reactivas para username y role
 
 
-// Recuperar la información de sesión del usuario cuando el componente se monta
-onMounted(() => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    // Decodificar el token para obtener la información del usuario
-    const decodedToken = jwt_decode(token);
-    role.value = decodedToken.user.role;
-  }
-});
+// // Recuperar la información de sesión del usuario cuando el componente se monta
+// onMounted(() => {
+//   const token = localStorage.getItem('token');
+//   if (token) {
+//     // Decodificar el token para obtener la información del usuario
+//     const decodedToken = jwt_decode(token);
+//     role.value = decodedToken.user.role;
+//   }
+// });
 
 
 
@@ -167,9 +170,10 @@ onMounted(() => {
     const decodedToken = jwt_decode(token);
     const role = decodedToken.user.role;
     const username = decodedToken.user.username;
-
+    const nombres =decodedToken.user.nombres;
+    const apellidos=decodedToken.user.apellidos;
     // Establecer la información del usuario en el store
-    userStore.setUserRole(role, username);
+    userStore.setUserRole(role, username,nombres,apellidos);
   }
 });
 

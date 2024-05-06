@@ -143,13 +143,24 @@ handleLoginResponse(response) {
     if (decodedToken && decodedToken.user) {
       const role = decodedToken.user.role;
       const username = decodedToken.user.username;
-
+      const nombres =decodedToken.user.nombres;
+      const apellidos =decodedToken.user.apellidos;
+      const tipoDocumento =decodedToken.user.tipoDocumento;
+      const numeroDocumento =decodedToken.user.numeroDocumento;
+      const telefono =decodedToken.user.telefono;
+      const sexo =decodedToken.user.sexo;
       // Guardar el token en el almacenamiento local
       localStorage.setItem('token', token);
-
-      console.log('User Role:', role);
-      console.log('Username:', username);
-      this.userStore.setUserRole(role, username); // Utiliza la referencia al store de usuario
+      console.log('Usuario ingresado')
+      console.log('User Role :', role);
+      console.log('Username :', username);
+      console.log('Nombres :',nombres);
+      console.log('Apellidos : ',apellidos);
+      console.log('Tipo Documento :',tipoDocumento);
+      console.log('Numero Documento : ',numeroDocumento);
+      console.log('Telefono :',telefono);
+      console.log('Sexo :',sexo)
+      this.userStore.setUserRole(role, username,nombres,apellidos,tipoDocumento,numeroDocumento,telefono,sexo); // Utiliza la referencia al store de usuario
       this.$router.push('/dashboard');
     } else {
       console.error('Token JWT inválido: no se encontró la propiedad "user" en el token decodificado.');

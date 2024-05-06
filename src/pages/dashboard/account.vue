@@ -14,33 +14,39 @@
         <v-file-input></v-file-input>
         </button> -->
         <v-file-input :rules="rules" accept="image/png, image/jpeg, image/bmp" label="Perfil"
-          placeholder="Escoja su perfil" prepend-icon="mdi-camera" style="width: 200px;"></v-file-input>
+          placeholder="Rol" prepend-icon="mdi-camera" style="width: 200px;"></v-file-input>
       </div>
       <v-row>
         <v-col cols="12" sm="6">
-          <v-text-field hint="Por ejemplo, Piero Alonso Flores Munarriz" label="Nombre completo"></v-text-field>
+          <v-text-field v-model="role" hide-details="auto" label="Rol en el Sistema" clearable></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-text-field hint="Por ejemplo, piero2310@gmail.com" label="Correo electrónico"></v-text-field>
+          <v-text-field v-model="nombres" hide-details="auto" label="Nombres" clearable></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-text-field hint="Por ejemplo, 3790397" label="Teléfono"></v-text-field>
+          <v-text-field v-model="apellidos" hide-details="auto" label="Apellidos" clearable></v-text-field>
+        </v-col>
+
+        <v-col cols="12" sm="6">
+          <v-text-field v-model="tipoDocumento" hide-details="auto" label="Tipo de documento" clearable></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-text-field hint="Por ejemplo, 912060265" label="Celular"></v-text-field>
+          <v-text-field v-model="numeroDocumento" hide-details="auto" label="Numero de documento" clearable></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-text-field hint="Por ejemplo, Masculino" label="Género"></v-text-field>
+          <v-text-field v-model="telefono" hide-details="auto" label="Telefono" clearable></v-text-field>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-combobox label="Género"
-            :items="['Masculino', 'Femenino']"></v-combobox>
+          <v-text-field v-model="sexo" hide-details="auto" label="Sexo" clearable></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="6">
+          <v-btn color="success" size="large" variant="elevated" type="submit" width="200" style="margin-left: auto;">
+      Guardar
+    </v-btn>
         </v-col>
       </v-row>
     </div>
-    <v-btn color="success" size="large" variant="elevated" type="submit" width="200" style="margin-left: auto;">
-      Guardar
-    </v-btn>
+
   </div>
 </template>
 <style>
@@ -91,8 +97,42 @@
 } */
 </style>
 
-<script>
-function abrirArchivo() {
-  document.getElementById("file-input").click();
-}
+<script setup>
+// function abrirArchivo() {
+//   document.getElementById("file-input").click();
+// }
+
+
+import { useUserStore } from '@/stores/User';
+import { computed } from 'vue';
+import { onMounted } from 'vue';
+import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el token JWT
+const userStore = useUserStore();
+const role = computed(() => userStore.user.role);
+const nombres=computed(()=> userStore.user.nombres);
+const apellidos=computed(()=>userStore.user.apellidos);
+const tipoDocumento=computed(()=>userStore.user.tipoDocumento);
+const numeroDocumento=computed(()=>userStore.user.numeroDocumento);
+const telefono=computed(()=>userStore.user.telefono);
+const sexo =computed(()=>userStore.user.sexo);
+
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    // Decodificar el token para obtener la información del usuario
+    const decodedToken = jwt_decode(token);
+    const role = decodedToken.user.role;
+    const username = decodedToken.user.username;
+    const nombres =decodedToken.user.nombres;
+    const apellidos=decodedToken.user.apellidos;
+    const tipoDocumento=decodedToken.user.tipoDocumento;
+    const numeroDocumento=decodedToken.user.numeroDocumento;
+    const telefono=decodedToken.user.telefono;
+    const sexo=decodedToken.user.sexo;
+    // Establecer la información del usuario en el store
+    userStore.setUserRole(role, username,nombres,apellidos,tipoDocumento,numeroDocumento,telefono,sexo);
+  }
+});
+
+
 </script>
