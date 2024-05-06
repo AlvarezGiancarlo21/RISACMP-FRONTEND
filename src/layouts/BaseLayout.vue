@@ -46,7 +46,7 @@
           <v-list-item  class="item" title="Dashboard" prepend-icon="mdi-view-dashboard" value="dashboard" to="/dashboard/home"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-factory" title="Produccion" @mouseover="showDrawerProduccion()" @mouseleave="hideDrawerProduccion()"></v-list-item>
           <v-list-item class="item" title="Productos" prepend-icon="mdi-star-circle-outline" value="products" @mouseover="showDrawer2()" @mouseleave="hideDrawer2()"></v-list-item>
-
+          <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Validar Prductos" to="/dashboard/validar-productos"></v-list-item>
           <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
           <!-- <v-list-item v-if="role === 'Jefe de Planta'"  class="item" prepend-icon="mdi-home-city" title="Funcionalidad Jefe" value="home" ></v-list-item> -->
           <!-- <v-list-item class="item" prepend-icon="mdi-folder-multiple" title="Servicios" value="services"  ></v-list-item> -->
@@ -58,6 +58,7 @@
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
 
           <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Funcionalidad Calidad"></v-list-item>
+          <v-list-item v-if="role === 'Chef'" class="item" prepend-icon="mdi-chef-hat" title="Gestionar Recetas" to="/dashboard/gestionar-recetas"></v-list-item>
         </v-list>
         <template v-slot:append>
           <div class="pa-2" >
@@ -82,9 +83,9 @@
         <!--Drawer expandido Produccion-->
       <v-navigation-drawer permanent v-model="drawerProduccion" style="background-color:aliceblue;" @mouseenter="cancelHideTimerDrawerProduccion()" @mouseleave="startHideTimerDrawerProduccion()">
         <v-list  density="compact" nav>
-          <v-list-item title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" ></v-list-item>
+          <v-list-item title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" to="/dashboard/autorizar-produccion"></v-list-item>
 
-          <v-list-item title="Consultar Produccion" value="consultarProd" prepend-icon="mdi-format-list-group"></v-list-item>
+          <v-list-item title="Consultar Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion"></v-list-item>
         </v-list>
       </v-navigation-drawer>
 
