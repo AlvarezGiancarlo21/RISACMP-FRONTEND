@@ -1,35 +1,46 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
+    <div style="background-color: #757575;">
+
   <v-app>
     <v-layout>
       <!--Drawer 1-->
+      <div>
       <v-navigation-drawer
         permanent
         v-model="drawer1"
         class="navigation-drawer"
+        floating
+        fixed
+      right
       >
+      <vue-perfect-scrollbar
+      :settings="{ suppressScrollX: true, wheelPropagation: false }"
+      class="ps"
+      style="height: 100%">
       <v-list >
           <v-list-item>
             <v-img
-  :width="300"
-  aspect-ratio="4/3"
-  cover
-  src="/src//assets/Imagenes/logo5.png"
-></v-img>
+              :width="300"
+              aspect-ratio="4/3"
+              cover
+              src="/src//assets/Imagenes/logo5.png"
+            ></v-img>
           </v-list-item>
           <v-list-item class="item"
             prepend-avatar="/src/assets/user.png"
             :title="nombres"
             :subtitle="apellidos"
-            style="background-color: #fff; color: #000; padding: 15px;"
+            style="background-color:#990000; color:#fff; padding: 10px; text-align:justify;"
             to="/dashboard/account"
           >
+          <v-divider></v-divider>
           <!-- <v-list-item>
             <p style="color: black;">{{ user }}</p>
           </v-list-item> -->
-          <v-list-item>
-            <p style="color: black">{{ role }}</p>
-          </v-list-item>
+
+            <p style="color: white">{{ role }}</p>
+
         </v-list-item>
 
 
@@ -67,17 +78,20 @@
           <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Funcionalidad Calidad"></v-list-item>
           <v-list-item v-if="role === 'Chef'" class="item" prepend-icon="mdi-chef-hat" title="Gestionar Recetas" to="/dashboard/gestionar-recetas"></v-list-item>
         </v-list>
-        <template v-slot:append>
-          <div class="pa-2" >
-            <v-btn block style="background-color: aliceblue;color: black;" @click="logout">
-              Cerrar Sesion
-            </v-btn>
-          </div>
-        </template>
+
+        <v-divider></v-divider>
+      <div class="px-6 mb-6 mt-6">
+        <v-btn block class="text-capitalize" color="white" @click="logout()">
+          Cerrar Sesión
+        </v-btn>
+      </div>
+      </vue-perfect-scrollbar>
       </v-navigation-drawer>
 
+
+
       <!--Drawer expandido Productos-->
-      <v-navigation-drawer permanent v-model="drawer2" style="background-color:aliceblue;" @mouseenter="cancelHideTimer()" @mouseleave="startHideTimer()">
+      <v-navigation-drawer floating permanent v-model="drawer2" style="background-color:aliceblue;" @mouseenter="cancelHideTimer()" @mouseleave="startHideTimer()">
         <v-list  density="compact" nav>
           <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" ></v-list-item>
 
@@ -116,40 +130,56 @@
     <!----Barra de navegcion----->
     <!--------------------------->
     <!--------------------------->
-    <v-app-bar  >
-      <template v-slot:prepend>
-        <v-btn style="background-color:black;color: white"
-              class="mr-3"
-              elevation="1"
-              fab
-              small
-              variant="text"
-              icon="mdi-dots-vertical"
-              :rail="rail"
-              @click.stop="drawer1 = !drawer1"
-        >
-      </v-btn>
-      </template>
+    <div style="max-width: 1200px; margin: 0 auto;">
 
-      <template v-slot:append>
-
-        <v-btn icon="mdi-view-quilt"></v-btn>
-
-
-        <v-btn
-            class="ml-2"
-            min-width="0"
-            text
-        >
-          <v-icon>mdi-account</v-icon>
+    <v-app-bar app class="px-sm text-left shadow-sm ma-4 rounded-lg" flat height="75" style="max-width:
+    1100px; margin: 0 auto;">
+      <v-app-bar-nav-icon
+          v-ripple="{ class: 'primary--text' }"
+          @click.stop="drawer1 = !drawer1"
+      />
+      <v-toolbar-title style="font-weight:400; color: #757575">RISACMP</v-toolbar-title>
+      <v-spacer />
+      <v-badge
+        bordered
+        overlap
+        color="red"
+        offset-x="22"
+        offset-y="22"
+      >
+        <v-btn icon @click="notificationDrawer = !notificationDrawer">
+          <v-icon>mdi-bell</v-icon>
         </v-btn>
-      </template>
+      </v-badge>
+
+      <v-btn icon @click="searchDrawer = !searchDrawer">
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-chip
+        pill
+        class="transparent rounded-pill py-6"
+        @click="userDrawer = !userDrawer"
+      >
+        Hola, {{ nombres }}
+        <v-avatar class="ml-2">
+          <v-img src="../assets/user.png"></v-img>
+        </v-avatar>
+      </v-chip>
+      <v-divider :thickness="20" class="border-opacity-0" vertical></v-divider>
     </v-app-bar>
-      <v-main class="d-flex align-center justify-center" style="max-height: auto;" >
+  </div>
+  </div>
+      <v-main class="d-flex align-center justify-center">
         <router-view/>
+        <template>
+      </template>
       </v-main>
+
+
     </v-layout>
   </v-app>
+</div>
 </template>
 
 
@@ -166,22 +196,6 @@ const userStore = useUserStore();
 const role = computed(() => userStore.user.role);
 const nombres=computed(()=> userStore.user.nombres);
 const apellidos=computed(()=>userStore.user.apellidos);
-// Variables reactivas
-
-// Define referencias reactivas para username y role
-
-
-// // Recuperar la información de sesión del usuario cuando el componente se monta
-// onMounted(() => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     // Decodificar el token para obtener la información del usuario
-//     const decodedToken = jwt_decode(token);
-//     role.value = decodedToken.user.role;
-//   }
-// });
-
-
 
 // Recuperar la información de sesión del usuario cuando el componente se monta
 onMounted(() => {
@@ -197,11 +211,6 @@ onMounted(() => {
     userStore.setUserRole(role, username,nombres,apellidos);
   }
 });
-
-
-
-
-
 
 let hideTimer;
 const drawer1=ref(true);
@@ -270,7 +279,7 @@ const cancelHideTimer = () => {
 };
 
 </script>
-<style scoped>
+<style lang="scss" scoped>
   .navigation-drawer{
     background-color:black;
   }
@@ -280,4 +289,139 @@ const cancelHideTimer = () => {
   .item:hover{
     background-color: #3d5252;
   }
+
+
+  .v-app-bar {
+  border: 1px solid #ccc;
+}
+
+
+//Navigation drawer principal
+.bg-sidebar-six {
+  background-color: #292f3d;
+}
+.theme--dark .v-navigation-drawer {
+  .bg-sidebar-six {
+    background-color: #3a3939;
+  }
+}
+.sidebar-six {
+  .v-list-item__icon {
+    margin-right: 8px !important;
+    // margin-bottom: 0;
+    // margin-top: 0;
+  }
+
+  .v-list-item--link:before {
+    border-radius: 8px;
+  }
+}
+
+
+
+/**CSS EJEMPLO */
+.header-backup {
+  display: block;
+  width: 100%;
+  height: 102px;
+  position: fixed;
+  top: 0;
+  z-index: 5;
+  background: linear-gradient(
+    180deg,
+    hsla(0, 0%, 97.3%, 0.95) 44%,
+    hsla(0, 0%, 97.3%, 0.46) 73%,
+    hsla(0, 0%, 100%, 0)
+  ) !important;
+  left: 0;
+  &.theme--dark {
+    background: linear-gradient(
+      180deg,
+      rgba(5, 5, 5, 0.95) 44%,
+      rgba(0, 0, 0, 0.46) 3%,
+      hsla(0, 0%, 100%, 0)
+    ) !important;
+  }
+}
+.tippy-box[data-theme~="light"] {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.vnb {
+  background: transparent !important;
+  &__menu-options {
+    margin-top: 3px !important;
+    &__option {
+      &__link {
+        &:focus {
+          outline: none;
+          border: 1px solid none;
+        }
+        &:hover {
+          color: #0081ff;
+          .vnb__menu-options__option__arrow {
+            fill: #0081ff;
+          }
+        }
+
+        // &__icon {
+        //   svg {
+        //     fill: #0081ff !important;
+        //     font-size: larger;
+        //   }
+        // }
+      }
+    }
+  }
+
+  &__sub-menu-options {
+    &__option {
+      &__link {
+        &:focus {
+          outline: none;
+          border: 1px solid none;
+        }
+        color: #000 !important;
+        &:hover {
+          color: #0081ff !important;
+        }
+      }
+    }
+  }
+}
+
+.vnb__collapse-button {
+  &:focus {
+    border: 1px solid none;
+    outline: none;
+  }
+  &:after {
+    content: "\F035C";
+    font-size: 25px;
+    font-weight: 600;
+    font-family: "Material Design Icons";
+  }
+  svg {
+    display: none !important;
+  }
+}
+
+.vnb__popup {
+  max-height: 80vh;
+  overflow-x: hidden;
+  overflow-y: scroll !important;
+  .vnb__popup__top__close-button {
+    &:focus {
+      border: 1px solid none;
+      outline: none;
+    }
+    top: 20px;
+    right: -33px;
+    svg {
+      fill: #000 !important;
+    }
+  }
+}
+
+
 </style>
