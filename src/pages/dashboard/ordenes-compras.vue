@@ -1,11 +1,11 @@
 <template>
   <v-container>
-          
+
           <v-row>
               <v-col class="mb-4 text-left">
                   <h2 class="display-2 mb-3">Registrar Órdenes de Compra</h2>
               </v-col>
-  
+
               <v-col class="text-right">
                 <!-- Boton que abre el dialog para registrar nueva orden de compra -->
                   <v-dialog v-model="dialog" max-width="1200">
@@ -18,19 +18,19 @@
                         v-bind="activatorProps"
                       ></v-btn>
                     </template>
-                
+
                     <v-card class="text-center" title="Orden De Compra">
                       <v-card-text>
                         <v-row dense>
                           <v-col  cols="12">
                             <p class="text-left font-weight-bold">Nombre de orden de compra: </p>
-                            <v-text-field 
+                            <v-text-field
                             v-model="nuevaOrden.nombre"
                             cleareable
                             placeholder="Nombre de orden de compra">
                             </v-text-field>
                           </v-col>
-                          
+
                           <v-col  cols="12">
                             <p class="text-left font-weight-bold">Buscar archivo: </p>
                             <v-text-field
@@ -38,23 +38,23 @@
                             cleareable>
                             </v-text-field>
                           </v-col>
-  
+
                           <v-col  cols="12">
                             <p class="text-left font-weight-bold">Fecha de subida: </p>
-                            <v-text-field 
+                            <v-text-field
                             class="font-weight-bold"
                             v-model="nuevaOrden.fecha_subida"
                             disabled
                             >
                             </v-text-field>
                           </v-col>
-                          
+
                         </v-row>
                         <v-row>
                           <v-col cols="8">
                           </v-col>
                           <v-col cols="2">
-                            <v-btn 
+                            <v-btn
                               width="300"
                               color="blue"
                               class="text-none font-weight-regular"
@@ -62,11 +62,11 @@
                               text="GUARDAR"
                               v-bind="activatorProps"
                               @click="agregarOrdenCompra"
-                            > 
+                            >
                             </v-btn>
                           </v-col>
                           <v-col cols="2">
-                            <v-btn 
+                            <v-btn
                               width="300"
                               color="red"
                               class="text-none font-weight-regular"
@@ -80,11 +80,11 @@
                       </v-card-text>
                     </v-card>
                   </v-dialog>
-                
-       
+
+
               </v-col>
           </v-row>
-  
+
           <v-row>
               <v-col>
                 <v-data-table :headers="headers" :items="ordenes" :search="search">
@@ -96,26 +96,26 @@
                     >
                   mdi-eye
                   </v-icon>
-                  
+
                   </template>
                 </v-data-table>
               </v-col>
           </v-row>
       </v-container>
-  
+
   </template>
-  
+
   <script>
   import axios from 'axios';
-  
-  
+
+
   export default {
     data() {
-      
-  
+
+
       return {
         dialog: false,
-  
+
         search: '',
         headers: [
           { align: 'start',
@@ -129,7 +129,7 @@
           { key: 'actions', title: 'Acciones', sortable: false}
         ],
         ordenes: [],
-        
+
         nuevaOrden: {
           nombre: '',
           archivo: '',
@@ -159,7 +159,7 @@
             archivo: '',
             fecha_subida: this.currentDate(),
           };
-          
+
         } catch (error) {
           console.error('Error al agregar orden:', error);
         }
@@ -167,7 +167,7 @@
         this.limpiarFormulario();
       },
       limpiarFormulario() {
-  
+
         this.nuevaOrden.nombre = '';
         this.nuevaOrden.fecha_subida = this.currentDate();
         this.nuevaOrden.archivo = '';
@@ -179,7 +179,7 @@
       handleFileChange(event) {
         this.nuevaOrden.archivo = event.target.files[0] || null;
       },
-  
+
       currentDate() {
         const current = new Date();
         const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
@@ -191,10 +191,9 @@
     }
   };
   </script>
-  
+
   <style>
   .v-main {
     align-items: flex-start !important;
   }
   </style>
-  

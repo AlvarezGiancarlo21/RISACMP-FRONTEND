@@ -201,7 +201,6 @@
               v-model="nuevoUsuario.password"
               variant="solo"
                 label="Contraseña"
-                type="password"
                 required
               ></v-text-field>
             </v-col>
@@ -355,15 +354,15 @@ const cargarUsuarios = async () => {
 };
 
 const nuevoUsuario = ref({
-  username: ' ',
-  password:' ',
-  role:' ',
-  nombres:' ',
-  apellidos:' ',
-  tipoDocumento:' ',
-  numeroDocumento:' ',
-  telefono:' ',
-  sexo:' ',
+  username: '',
+  password:'',
+  role:'',
+  nombres:'',
+  apellidos:'',
+  tipoDocumento:'',
+  numeroDocumento:'',
+  telefono:'',
+  sexo:'',
 
   // Agrega los otros campos del usuario aquí
 });
