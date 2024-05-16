@@ -377,7 +377,7 @@ const editarUsuario = (usuario) => {
   usuarioActual.value = { ...usuario, id: usuario._id };
   dialogEditarUsuario.value = true;
 };
-
+//Cambios en el front
 const actualizarUsuario = async () => {
   try {
     await axios.put(`http://localhost:3000/api/auth/users/${usuarioActual.value.id}`, usuarioActual.value);
@@ -389,6 +389,7 @@ const actualizarUsuario = async () => {
     console.error('Error al actualizar el usuario:', error);
   }
 };
+
 
 const confirmarEliminarUsuario = (usuario) => {
   usuarioActual.value = { ...usuario, id: usuario._id };
