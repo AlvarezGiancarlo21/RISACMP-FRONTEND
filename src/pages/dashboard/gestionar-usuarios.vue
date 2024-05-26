@@ -173,6 +173,16 @@
                           required
                         ></v-text-field>
                       </v-col>
+                      <!-- Campo de entrada de archivo -->
+                      <v-col cols="12" sm="6">
+                        <v-file-input
+                          v-model="nuevoUsuario.cv"
+                          label="Cargar CV"
+                          variant="solo"
+                          required
+                          accept=".pdf,.doc,.docx"
+                        ></v-file-input>
+                      </v-col>
                     </v-row>
                     <small class="text-caption text-medium-emphasis">*indicates required field</small>
                   </v-card-text>
@@ -189,7 +199,7 @@
           <!-- Columnas de la tabla -->
           <template v-slot:[`item.actions`]="{ item }">
             <v-row>
-              <v-btn color="primary" small dark @click="verUsuario(item)">
+              <v-btn color="primary" small dark  @click="verUsuario(item)">
                 <v-icon left>mdi-account-details</v-icon>
                 <span>Ver</span>
               </v-btn>
@@ -235,6 +245,12 @@
             </v-col>
             <v-col cols="12" md="4" sm="6">
               <v-text-field  :value="usuarioActual.telefono" readonly></v-text-field>
+            </v-col>
+            <!-- Mostrar enlace para descargar CV -->
+            <v-col cols="12" sm="6">
+              <v-btn :href="usuarioActual.cv" target="_blank" color="primary">
+                Descargar CV
+              </v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -312,7 +328,6 @@
     </v-dialog>
   </div>
 </template>
-
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
@@ -344,6 +359,7 @@ const nuevoUsuario = ref({
   tipoDocumento: '',
   numeroDocumento: '',
   telefono: '',
+  cv: null, // Nuevo campo para el archivo
 });
 
 const usuarioActual = ref({});
@@ -359,7 +375,15 @@ const cargarUsuarios = async () => {
 
 const registrarUsuario = async () => {
   try {
-    await axios.post('http://localhost:3000/api/auth/register', nuevoUsuario.value);
+    const formData = new FormData();
+    for (const key in nuevoUsuario.value) {
+      formData.append(key, nuevoUsuario.value[key]);
+    }
+    await axios.post('http://localhost:3000/api/auth/register', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     alert('Usuario registrado correctamente.');
     dialogRegistrarUsuario.value = false;
     cargarUsuarios();
@@ -368,6 +392,7 @@ const registrarUsuario = async () => {
     console.error('Error al registrar el usuario:', error);
   }
 };
+
 const verUsuario = (usuario) => {
   usuarioActual.value = { ...usuario, id: usuario._id };
   dialogVerUsuario.value = true;
@@ -377,7 +402,7 @@ const editarUsuario = (usuario) => {
   usuarioActual.value = { ...usuario, id: usuario._id };
   dialogEditarUsuario.value = true;
 };
-//Cambios en el front
+
 const actualizarUsuario = async () => {
   try {
     await axios.put(`http://localhost:3000/api/auth/users/${usuarioActual.value.id}`, usuarioActual.value);
@@ -389,7 +414,6 @@ const actualizarUsuario = async () => {
     console.error('Error al actualizar el usuario:', error);
   }
 };
-
 
 const confirmarEliminarUsuario = (usuario) => {
   usuarioActual.value = { ...usuario, id: usuario._id };
@@ -438,6 +462,7 @@ const exportToPDF = () => {
       console.error('Error al exportar a PDF:', error);
     });
 };
+
 onMounted(cargarUsuarios);
 </script>
 
