@@ -1,40 +1,34 @@
 <template>
-  <v-footer
-    tile
-    height="80"
-    class="font-weight-medium shadow-sm rounded-lg ma-4"
-    :color="$vuetify.theme.dark ? 'dark' : 'white'"
-    :dark="$vuetify.theme.dark"
-    :inset="true"
-  >
-    <v-col class="text-left" cols="12">
-      <div class="d-flex flex-row justify-space-between align-center">
-        <div>
-          <strong class="text--disabled">
-            SISGEM 🍖
-          </strong>
-        </div>
-        <div>
-          <strong class="text--disabled">
-            © Copyrigth {{ new Date().getFullYear() }}-{{
-              new Date().getFullYear() + 1
-            }}
-          </strong>
-        </div>
-      </div>
-    </v-col>
+  <v-footer class="d-flex flex-column">
+    <div class="bg-teal d-flex w-100 align-center px-4">
+      <strong>Get connected with us on social networks!</strong>
+
+      <v-spacer></v-spacer>
+
+      <v-btn
+        v-for="icon in icons"
+        :key="icon"
+        :icon="icon"
+        class="mx-4"
+        size="small"
+        variant="plain"
+      ></v-btn>
+    </div>
+
+    <div class="px-4 py-2 bg-black text-center w-100">
+      {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+    </div>
   </v-footer>
 </template>
-
 <script>
-
-export default {
-};
+  export default {
+    data: () => ({
+      icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],
+    }),
+  }
 </script>
-<style lang="scss" scoped>
-.app--footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-</style>

@@ -1,9 +1,9 @@
 <template>
     <div>
-      <v-card class="card" style="margin: 80px auto 0; width: auto; height: 120%;">
+      <v-card >
         <v-card-title>Gestionar Pedidos</v-card-title>
-        <div class="d-flex justify-center align-center">
-          <v-data-table
+        <div class="d-flex justify-center align-center" >
+          <v-data-table style="text-align: center;"
             :headers="headersTableUsuario"
             :items="usuarios"
             :search="search"
@@ -287,11 +287,11 @@
   import axios from 'axios';
   
   const headersTableUsuario = [
-    { text: 'Usuario', value: 'username' },
-    { text: 'Nombres', value: 'nombres' },
-    { text: 'Apellidos', value: 'apellidos' },
-    { text: 'Rol', value: 'role' },
-    { text: 'Acciones', value: 'actions', sortable: false },
+    { title: 'Usuario', value: 'username' },
+    { title: 'Nombres', value: 'nombres' },
+    { title: 'Apellidos', value: 'apellidos' },
+    { title: 'Rol', value: 'role' },
+    { title: 'Acciones', value: 'actions', sortable: false },
   ];
   
   const usuarios = ref([]);

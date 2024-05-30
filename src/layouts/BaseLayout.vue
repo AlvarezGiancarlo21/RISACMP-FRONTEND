@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-    <div style="background-color: #757575;">
+
 
   <v-app>
     <v-layout>
@@ -155,17 +155,21 @@
     </v-app-bar>
 
 
- 
-      <v-main class=" align-center justify-center">
-        <router-view/>
-        <template>
-      </template>
-      </v-main>
+      
+      <v-main class="d-flex align-center justify-center" style="min-height: 300px;min-height: 600px;">
 
+          <router-view/>
+          
+    
+      </v-main>
+    
+    
+
+    
 
     </v-layout>
   </v-app>
-</div>
+
 </template>
 
 
@@ -201,6 +205,7 @@ const drawer2=ref(false);
 const drawerProduccion=ref(false)
 
 import { useRouter } from 'vue-router';
+// import AppFooter from '@/components/AppFooter.vue';
 
 const router = useRouter();
 
