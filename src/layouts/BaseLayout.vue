@@ -5,7 +5,7 @@
   <v-app>
     <v-layout>
       <!--Drawer 1-->
-      <div>
+
       <v-navigation-drawer
         permanent
         v-model="drawer1"
@@ -108,8 +108,9 @@
           <v-list-item v-if="role === 'Jefe de Planta'" title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" to="/dashboard/autorizar-produccion"></v-list-item>
 
           <v-list-item v-if="role === 'Jefe de Planta'" title="Consultar Lista Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion" ></v-list-item>
-
+ 
           <!--Jefe de Produccion-->
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-receta" title="Visualizar Recetas" value="vRecetas" prepend-icon="mdi-chef-hat" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-historico" title="Visualizar Historico" value="vHistorico" prepend-icon="mdi-history" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-planta" title="Gestionar Planta" value="gestionarPlanta" prepend-icon="mdi-factory" ></v-list-item>
@@ -130,47 +131,32 @@
     <!----Barra de navegcion----->
     <!--------------------------->
     <!--------------------------->
-    <div style="max-width: 1200px; margin: 0 auto;">
 
-    <v-app-bar app class="px-sm text-left shadow-sm ma-4 rounded-lg" flat height="75" style="max-width:
-    1100px; margin: 0 auto;">
+
+    <v-app-bar :elevation="2" rounded dense
+      floating>
       <v-app-bar-nav-icon
           v-ripple="{ class: 'primary--text' }"
           @click.stop="drawer1 = !drawer1"
       />
       <v-toolbar-title style="font-weight:400; color: #757575">RISACMP</v-toolbar-title>
       <v-spacer />
-      <v-badge
-        bordered
-        overlap
-        color="red"
-        offset-x="22"
-        offset-y="22"
-      >
-        <v-btn icon @click="notificationDrawer = !notificationDrawer">
-          <v-icon>mdi-bell</v-icon>
-        </v-btn>
-      </v-badge>
+
+
 
       <v-btn icon @click="searchDrawer = !searchDrawer">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
+      <!---->
+      <MenuNotificacion/>
+      <MenuUser/>
 
-      <v-chip
-        pill
-        class="transparent rounded-pill py-6"
-        @click="userDrawer = !userDrawer"
-      >
-        Hola, {{ nombres }}
-        <v-avatar class="ml-2">
-          <v-img src="../assets/user.png"></v-img>
-        </v-avatar>
-      </v-chip>
-      <v-divider :thickness="20" class="border-opacity-0" vertical></v-divider>
+      
     </v-app-bar>
-  </div>
-  </div>
-      <v-main class="d-flex align-center justify-center">
+
+
+ 
+      <v-main class=" align-center justify-center">
         <router-view/>
         <template>
       </template>
@@ -190,9 +176,6 @@ import { computed } from 'vue';
 import { onMounted } from 'vue';
 import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el token JWT
 const userStore = useUserStore();
-
-// Define referencias reactivas para username y role
-// const user = computed(() => userStore.user.username);
 const role = computed(() => userStore.user.role);
 const nombres=computed(()=> userStore.user.nombres);
 const apellidos=computed(()=>userStore.user.apellidos);
