@@ -104,12 +104,14 @@
           <!--Jefe de Produccion-->
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta'" to="/dashboard/ver-pedidos" title="Ver Pedidos" value="verPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-plan-produccion" title="Planificar Produccion" value="pProduccion" prepend-icon="mdi-calendar"></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-orden-trabajo" title="Gestionar Orden de Trabajo" value="gOrdenTrabajo" prepend-icon="mdi-network-pos"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-receta" title="Visualizar Recetas" value="vRecetas" prepend-icon="mdi-chef-hat" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-historico" title="Visualizar Historico" value="vHistorico" prepend-icon="mdi-history" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-planta" title="Gestionar Planta" value="gestionarPlanta" prepend-icon="mdi-factory" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/consultar-stock" title="Consultar Stock" value="cStock" prepend-icon="mdi-list-status" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/consultar-reporte-merma" title="Consultar Reporte de Merma" value="cReporteMerma" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
-          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-plan-produccion" title="Planificar Produccion" value="pProduccion" prepend-icon="mdi-calendar"></v-list-item>
+          
           <!--Encargado de Produccion-->
           <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/materia-prima" title="Materia Prima" value="mPrima" prepend-icon="mdi-food-steak" ></v-list-item>
           <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/productos-terminados" title="Productos Terminados" value="pTerminados" prepend-icon="mdi-package-variant-closed-check" ></v-list-item>

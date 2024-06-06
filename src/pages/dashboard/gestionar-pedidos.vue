@@ -1,4 +1,5 @@
 <template>
+  <v-card>
   <div class="container-tabla-pedidos">
     <v-card flat>
       <template v-slot:text>
@@ -168,6 +169,7 @@
       </v-card>
     </v-dialog>
   </div>
+</v-card>
 </template>
 
 <script>
