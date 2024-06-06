@@ -11,15 +11,15 @@
             hide-details
           ></v-text-field>
           <v-btn icon="mdi-export" color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
-          <v-btn v-if="role === 'Jefe de Produccion'" prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
+          <v-btn  prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
             Registrar Pedido
           </v-btn>
         </div> 
       </template>
       <v-data-table :headers="headers" :items="pedidos" :search="search">
         <template v-slot:item.actions="{ item }">
-          <v-icon v-if="role === 'Jefe de Produccion'" @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
-          <v-icon @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
+          <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
+          <v-icon  @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -144,7 +144,10 @@ const userStore = useUserStore();
 const role = computed(() => userStore.user.role);
 const nombres=computed(()=> userStore.user.nombres);
 const apellidos=computed(()=>userStore.user.apellidos);
+import { useRouter } from 'vue-router';
+// import AppFooter from '@/components/AppFooter.vue';
 
+const router = useRouter();
 // Recuperar la información de sesión del usuario cuando el componente se monta
 onMounted(() => {
   const token = localStorage.getItem('token');

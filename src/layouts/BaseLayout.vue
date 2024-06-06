@@ -102,7 +102,8 @@
           <v-list-item v-if="role === 'Jefe de Planta'" title="Consultar Lista Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion" ></v-list-item>
  
           <!--Jefe de Produccion-->
-          <v-list-item v-if="role === 'Jefe de Produccion' || role==='Jefe de Planta'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta'" to="/dashboard/ver-pedidos" title="Ver Pedidos" value="verPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-receta" title="Visualizar Recetas" value="vRecetas" prepend-icon="mdi-chef-hat" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-historico" title="Visualizar Historico" value="vHistorico" prepend-icon="mdi-history" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-planta" title="Gestionar Planta" value="gestionarPlanta" prepend-icon="mdi-factory" ></v-list-item>
