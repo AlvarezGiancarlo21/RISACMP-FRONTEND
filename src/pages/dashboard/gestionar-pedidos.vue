@@ -24,17 +24,37 @@
       </v-data-table>
     </v-card>
     <!-- Diálogo para nuevo pedido -->
-    <v-dialog v-model="nuevoPedidoDialog" max-width="500px">
+    <v-dialog v-model="nuevoPedidoDialog" max-width="800px">
       <v-card>
         <v-card-title>Nuevo Pedido</v-card-title>
         <v-card-text>
-          <v-text-field v-model="nuevoPedido.codigoPedido" label="Código de Pedido"></v-text-field>
-          <v-text-field v-model="nuevoPedido.nombreCliente" label="Nombre del Cliente"></v-text-field>
-          <v-text-field v-model="nuevoPedido.estadoPedido" label="Estado del Pedido"></v-text-field>
-          <v-text-field v-model="nuevoPedido.codigoProducto" label="Código del Producto"></v-text-field>
-          <v-text-field v-model="nuevoPedido.cantidad.kilos" label="Cantidad en Kilos"></v-text-field>
-          <v-text-field v-model="nuevoPedido.cantidad.unidades" label="Cantidad en Unidades"></v-text-field>
-          <v-text-field v-model="nuevoPedido.observacion" label="Observación"></v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="nuevoPedido.codigoPedido" label="Código de Pedido"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="nuevoPedido.nombreCliente" label="Nombre del Cliente"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-select clearable v-model="nuevoPedido.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="nuevoPedido.codigoProducto" label="Código del Producto"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+              <span style="text-align: center;">Cantidad</span>
+            </v-row>
+          <v-row>
+
+            <v-col>
+              <v-text-field v-model="nuevoPedido.cantidad.kilos" label="Kilos"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="nuevoPedido.cantidad.unidades" label="Unidades"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-textarea v-model="nuevoPedido.observacion" label="Observación"></v-textarea>
         </v-card-text>
         <v-card-actions>
           <v-btn color="blue darken-2" text @click="crearPedido">Guardar</v-btn>
@@ -43,17 +63,35 @@
       </v-card>
     </v-dialog>
     <!-- Diálogo para editar pedido -->
-    <v-dialog v-model="editarPedidoDialog" max-width="500px">
+    <v-dialog v-model="editarPedidoDialog" max-width="700px">
       <v-card>
         <v-card-title>Editar Pedido</v-card-title>
         <v-card-text>
-          <v-text-field v-model="pedidoSeleccionado.codigoPedido" label="Código de Pedido"></v-text-field>
-          <v-text-field v-model="pedidoSeleccionado.nombreCliente" label="Nombre del Cliente"></v-text-field>
-          <v-text-field v-model="pedidoSeleccionado.estadoPedido" label="Estado del Pedido"></v-text-field>
-          <v-text-field v-model="pedidoSeleccionado.codigoProducto" label="Código del Producto"></v-text-field>
-          <v-text-field v-model="pedidoSeleccionado.cantidad.kilos" label="Cantidad en Kilos"></v-text-field>
-          <v-text-field v-model="pedidoSeleccionado.cantidad.unidades" label="Cantidad en Unidades"></v-text-field>
-          <v-text-field v-model="pedidoSeleccionado.observacion" label="Observación"></v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="pedidoSeleccionado.codigoPedido" label="Código de Pedido"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="pedidoSeleccionado.nombreCliente" label="Nombre del Cliente"></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-select clearable v-model="pedidoSeleccionado.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="pedidoSeleccionado.codigoProducto" label="Código del Producto"></v-text-field>          
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="pedidoSeleccionado.cantidad.kilos" label="Cantidad en Kilos"></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field v-model="pedidoSeleccionado.cantidad.unidades" label="Cantidad en Unidades"></v-text-field>          
+            </v-col>
+          </v-row>
+          <v-textarea v-model="pedidoSeleccionado.observacion" label="Observación"></v-textarea>
         </v-card-text>
         <v-card-actions>
           <v-btn color="blue darken-2" text @click="actualizarPedido">Guardar</v-btn>
