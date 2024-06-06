@@ -10,11 +10,9 @@
             variant="outlined"
             hide-details
           ></v-text-field>
-          <v-btn color="green darken-2" @click="dialogExportarPedidos = true">
-            Exportar
-          </v-btn>
-          <v-btn color="blue darken-2" @click="nuevoPedidoDialog = true">
-            Nuevo Pedido
+          <v-btn icon="mdi-export"  color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
+          <v-btn prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
+            Registrar Pedido
           </v-btn>
         </div>
       </template>
