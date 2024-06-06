@@ -49,10 +49,13 @@
       <v-card>
         <v-card-title>Exportar Pedidos</v-card-title>
         <v-card-text>
-          <v-btn color="blue darken-2" text @click="exportarPedidosExcel">Exportar a Excel</v-btn>
-          <v-btn color="blue darken-2" text @click="exportarPedidosPDF">Exportar a PDF</v-btn>
+          <v-radio-group v-model="exportFormat">
+            <v-radio value="excel" label="Exportar a Excel"></v-radio>
+            <v-radio value="pdf" label="Exportar a PDF"></v-radio>
+          </v-radio-group>
         </v-card-text>
         <v-card-actions>
+          <v-btn color="blue darken-2" text @click="exportarPedidos">Exportar</v-btn>
           <v-btn color="red darken-2" text @click="dialogExportarPedidos = false">Cancelar</v-btn>
         </v-card-actions>
       </v-card>
@@ -78,6 +81,7 @@ export default {
       pedidos: [],
       nuevoPedidoDialog: false,
       dialogExportarPedidos: false,
+      exportFormat: "excel",
       nuevoPedido: {
         codigoPedido: "",
         nombreCliente: "",
@@ -136,6 +140,13 @@ export default {
         this.fetchPedidos();
       } catch (error) {
         console.error("Error deleting pedido:", error);
+      }
+    },
+    async exportarPedidos() {
+      if (this.exportFormat === "excel") {
+        this.exportarPedidosExcel();
+      } else if (this.exportFormat === "pdf") {
+        this.exportarPedidosPDF();
       }
     },
     async exportarPedidosExcel() {
