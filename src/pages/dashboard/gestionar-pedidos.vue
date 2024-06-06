@@ -14,12 +14,12 @@
           <v-btn prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
             Registrar Pedido
           </v-btn>
-        </div>
+        </div> 
       </template>
       <v-data-table :headers="headers" :items="pedidos" :search="search">
         <template v-slot:item.actions="{ item }">
           <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
-          <v-icon @click="eliminarPedido(item)">mdi-delete</v-icon>
+          <v-icon @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -78,6 +78,57 @@
       </v-card>
     </v-dialog>
     <!-- Otros diálogos -->
+         <!-- Diálogo para ver detalle del pedido -->
+    <v-dialog v-model="detallePedidoDialog" max-width="500px">
+      <v-card>
+        <v-card-title>Detalle del Pedido</v-card-title>
+        <v-card-text>
+          <v-list>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Código de Pedido:</v-list-item-title>
+                <v-list-item-subtitle>{{ detallePedido.codigoPedido }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Nombre del Cliente:</v-list-item-title>
+                <v-list-item-subtitle>{{ detallePedido.nombreCliente }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Estado del Pedido:</v-list-item-title>
+                <v-list-item-subtitle>{{ detallePedido.estadoPedido }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Código del Producto:</v-list-item-title>
+                <v-list-item-subtitle>{{ detallePedido.codigoProducto }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Cantidad:</v-list-item-title>
+                <v-list-item-subtitle>Peso en Kilos : {{ detallePedido.cantidad.kilos }} kg</v-list-item-subtitle>
+                <v-list-item-subtitle>Unidades : {{ detallePedido.cantidad.unidades }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>Observacion:</v-list-item-title>
+                <v-list-item-subtitle>{{ detallePedido.observacion }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <!-- Agregar más detalles del pedido aquí según sea necesario -->
+          </v-list>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="red darken-2" text @click="cerrarVerPedido">Cerrar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -100,6 +151,7 @@ export default {
       editarPedidoDialog: false,
       dialogExportarPedidos: false,
       exportFormat: "excel",
+      detallePedidoDialog: false,
       nuevoPedido: {
         codigoPedido: "",
         nombreCliente: "",
@@ -123,6 +175,7 @@ export default {
         console.error("Error fetching data:", error);
       }
     },
+
     async crearPedido() {
       try {
         await axios.post("http://localhost:3000/api/pedidos/register", this.nuevoPedido);
@@ -147,6 +200,15 @@ export default {
     async abrirDialogoEditarPedido(pedido) {
       this.pedidoSeleccionado = { ...pedido };
       this.editarPedidoDialog = true;
+    },
+    async verDetallePedido(pedido) {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/pedidos/${pedido._id}`);
+        this.detallePedido = response.data;
+        this.detallePedidoDialog = true;
+      } catch (error) {
+        console.error("Error fetching pedido detail:", error);
+      }
     },
     async actualizarPedido() {
       try {
@@ -232,9 +294,11 @@ export default {
       this.nuevoPedidoDialog = false;
     },
     cancelarEditarPedido() {
-      this.pedidoSeleccionado = null;
       this.editarPedidoDialog = false;
     },
+    cerrarVerPedido(){
+      this.detallePedidoDialog=false;
+    }
   },
   mounted() {
     this.fetchPedidos();
