@@ -63,15 +63,7 @@
           <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-list-box" title="Facturas" to="/dashboard/gestion-facturas" ></v-list-item>
           <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-credit-card-edit" title="Nota de Credito" to="/dashboard/nota-de-credito" ></v-list-item>
           <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-shopping" title="Ordenes de Compra" to="/dashboard/ordenes-compras" ></v-list-item>
-          <!----------------->
           <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Validar Prductos" to="/dashboard/validar-productos"></v-list-item>
-          <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
-          <!-- <v-list-item v-if="role === 'Jefe de Planta'"  class="item" prepend-icon="mdi-home-city" title="Funcionalidad Jefe" value="home" ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-folder-multiple" title="Servicios" value="services"  ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Users" value="users" to="/dashboard/users"></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-logout" title="Salir" value="signout"  ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-home-city" title="Inicio" value="home" ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item> -->
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users" to="/dashboard/gestionar-usuarios"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
 
@@ -110,7 +102,7 @@
           <v-list-item v-if="role === 'Jefe de Planta'" title="Consultar Lista Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion" ></v-list-item>
  
           <!--Jefe de Produccion-->
-          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion' || role==='Jefe de Planta'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-receta" title="Visualizar Recetas" value="vRecetas" prepend-icon="mdi-chef-hat" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-historico" title="Visualizar Historico" value="vHistorico" prepend-icon="mdi-history" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-planta" title="Gestionar Planta" value="gestionarPlanta" prepend-icon="mdi-factory" ></v-list-item>

@@ -11,14 +11,14 @@
             hide-details
           ></v-text-field>
           <v-btn icon="mdi-export" color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
-          <v-btn prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
+          <v-btn v-if="role === 'Jefe de Produccion'" prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
             Registrar Pedido
           </v-btn>
         </div> 
       </template>
       <v-data-table :headers="headers" :items="pedidos" :search="search">
         <template v-slot:item.actions="{ item }">
-          <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
+          <v-icon v-if="role === 'Jefe de Produccion'" @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
           <v-icon @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
         </template>
       </v-data-table>
@@ -134,6 +134,31 @@
 
 <script>
 import axios from "axios";
+
+import { ref } from 'vue';
+import { useUserStore } from '@/stores/User';
+import { computed } from 'vue';
+import { onMounted } from 'vue';
+import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el token JWT
+const userStore = useUserStore();
+const role = computed(() => userStore.user.role);
+const nombres=computed(()=> userStore.user.nombres);
+const apellidos=computed(()=>userStore.user.apellidos);
+
+// Recuperar la información de sesión del usuario cuando el componente se monta
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    // Decodificar el token para obtener la información del usuario
+    const decodedToken = jwt_decode(token);
+    const role = decodedToken.user.role;
+    const username = decodedToken.user.username;
+    const nombres =decodedToken.user.nombres;
+    const apellidos=decodedToken.user.apellidos;
+    // Establecer la información del usuario en el store
+    userStore.setUserRole(role, username,nombres,apellidos);
+  }
+});
 
 export default {
   data() {
