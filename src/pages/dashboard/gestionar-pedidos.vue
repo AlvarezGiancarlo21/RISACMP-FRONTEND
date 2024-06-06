@@ -10,7 +10,7 @@
             variant="outlined"
             hide-details
           ></v-text-field>
-          <v-btn icon="mdi-export"  color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
+          <v-btn icon="mdi-export" color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
           <v-btn prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
             Registrar Pedido
           </v-btn>
@@ -18,7 +18,7 @@
       </template>
       <v-data-table :headers="headers" :items="pedidos" :search="search">
         <template v-slot:item.actions="{ item }">
-          <v-icon @click="editarPedido(item)" class="mr-2">mdi-pencil</v-icon>
+          <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
           <v-icon @click="eliminarPedido(item)">mdi-delete</v-icon>
         </template>
       </v-data-table>
@@ -39,6 +39,25 @@
         <v-card-actions>
           <v-btn color="blue darken-2" text @click="crearPedido">Guardar</v-btn>
           <v-btn color="red darken-2" text @click="cancelarNuevoPedido">Cancelar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- Diálogo para editar pedido -->
+    <v-dialog v-model="editarPedidoDialog" max-width="500px">
+      <v-card>
+        <v-card-title>Editar Pedido</v-card-title>
+        <v-card-text>
+          <v-text-field v-model="pedidoSeleccionado.codigoPedido" label="Código de Pedido"></v-text-field>
+          <v-text-field v-model="pedidoSeleccionado.nombreCliente" label="Nombre del Cliente"></v-text-field>
+          <v-text-field v-model="pedidoSeleccionado.estadoPedido" label="Estado del Pedido"></v-text-field>
+          <v-text-field v-model="pedidoSeleccionado.codigoProducto" label="Código del Producto"></v-text-field>
+          <v-text-field v-model="pedidoSeleccionado.cantidad.kilos" label="Cantidad en Kilos"></v-text-field>
+          <v-text-field v-model="pedidoSeleccionado.cantidad.unidades" label="Cantidad en Unidades"></v-text-field>
+          <v-text-field v-model="pedidoSeleccionado.observacion" label="Observación"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="blue darken-2" text @click="actualizarPedido">Guardar</v-btn>
+          <v-btn color="red darken-2" text @click="cancelarEditarPedido">Cancelar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -78,6 +97,7 @@ export default {
       ],
       pedidos: [],
       nuevoPedidoDialog: false,
+      editarPedidoDialog: false,
       dialogExportarPedidos: false,
       exportFormat: "excel",
       nuevoPedido: {
@@ -124,17 +144,22 @@ export default {
         console.error("Error creating pedido:", error);
       }
     },
-    async editarPedido() {
+    async abrirDialogoEditarPedido(pedido) {
+      this.pedidoSeleccionado = { ...pedido };
+      this.editarPedidoDialog = true;
+    },
+    async actualizarPedido() {
       try {
-        await axios.put(`http://localhost:3000/api/pedidos/${this.pedidoSeleccionado.id}`, this.pedidoSeleccionado);
-        // Lógica adicional si es necesaria
+        await axios.put(`http://localhost:3000/api/pedidos/${this.pedidoSeleccionado._id}`, this.pedidoSeleccionado);
+        this.editarPedidoDialog = false;
+        this.fetchPedidos();
       } catch (error) {
         console.error("Error updating pedido:", error);
       }
     },
     async eliminarPedido(pedido) {
       try {
-        await axios.delete(`http://localhost:3000/api/pedidos/${pedido.id}`);
+        await axios.delete(`http://localhost:3000/api/pedidos/${pedido._id}`);
         this.fetchPedidos();
       } catch (error) {
         console.error("Error deleting pedido:", error);
@@ -205,6 +230,10 @@ export default {
         observacion: "",
       };
       this.nuevoPedidoDialog = false;
+    },
+    cancelarEditarPedido() {
+      this.pedidoSeleccionado = null;
+      this.editarPedidoDialog = false;
     },
   },
   mounted() {
