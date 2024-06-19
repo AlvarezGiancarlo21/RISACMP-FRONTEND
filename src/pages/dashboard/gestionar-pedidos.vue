@@ -11,7 +11,9 @@
               variant="outlined"
               hide-details
             ></v-text-field>
-            <v-btn icon="mdi-export" color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
+            <v-btn icon color="green darken-2" @click="dialogExportarPedidos = true">
+              <v-icon>mdi-export</v-icon>
+            </v-btn>
             <v-btn prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
               Registrar Pedido
             </v-btn>
@@ -32,20 +34,24 @@
           <v-card-text>
             <v-row>
               <v-col>
-                <v-text-field v-model="nuevoPedido.codigoPedido" label="Código de Pedido"></v-text-field>
+                <v-text-field v-model="nuevoPedido.codigoPedido" label="Código de Pedido" disabled></v-text-field>
               </v-col>
               <v-col>
                 <v-text-field v-model="nuevoPedido.nombreCliente" label="Nombre del Cliente"></v-text-field>
               </v-col>
               <v-col>
-                <v-select clearable v-model="nuevoPedido.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+                <v-select v-model="nuevoPedido.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
               </v-col>
             </v-row>
+            <v-divider :thickness="12" class="border-opacity-0"></v-divider>
+            <v-card>
+              <v-divider :thickness="12" class="border-opacity-0"></v-divider>
             <v-row>
               <v-col>
                 <v-btn @click="addProducto" color="blue darken-2">Añadir Producto</v-btn>
               </v-col>
             </v-row>
+            <v-divider :thickness="12" class="border-opacity-0"></v-divider>
             <v-row v-for="(producto, index) in nuevoPedido.productos" :key="index">
               <v-col>
                 <v-text-field v-model="producto.producto_id" label="ID del Producto"></v-text-field>
@@ -57,9 +63,11 @@
                 <v-text-field v-model="producto.unidad_medida_id" label="Unidad de Medida"></v-text-field>
               </v-col>
               <v-col>
-                <v-btn icon="mdi-delete" color="red darken-2" @click="removeProducto(index)"></v-btn>
+                <v-btn icon @click="removeProducto(index)" color="red darken-2"><v-icon>mdi-delete</v-icon></v-btn>
               </v-col>
             </v-row>
+          </v-card>
+          <v-divider :thickness="12" class="border-opacity-0"></v-divider>
             <v-textarea v-model="nuevoPedido.observacion" label="Observación"></v-textarea>
           </v-card-text>
           <v-card-actions>
@@ -84,7 +92,7 @@
             </v-row>
             <v-row>
               <v-col>
-                <v-select clearable v-model="pedidoSeleccionado.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+                <v-select v-model="pedidoSeleccionado.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
               </v-col>
             </v-row>
             <v-row>
@@ -103,7 +111,7 @@
                 <v-text-field v-model="producto.unidad_medida_id" label="Unidad de Medida"></v-text-field>
               </v-col>
               <v-col>
-                <v-btn icon="mdi-delete" color="red darken-2" @click="removeProductoEdicion(index)"></v-btn>
+                <v-btn icon @click="removeProductoEdicion(index)" color="red darken-2"><v-icon>mdi-delete</v-icon></v-btn>
               </v-col>
             </v-row>
             <v-textarea v-model="pedidoSeleccionado.observacion" label="Observación"></v-textarea>
@@ -132,7 +140,6 @@
         </v-card>
       </v-dialog>
 
-      <!-- Otros diálogos -->
       <!-- Diálogo para ver detalle del pedido -->
       <v-dialog v-model="detallePedidoDialog" max-width="500px">
         <v-card>
@@ -186,194 +193,209 @@
     </div>
   </v-card>
 </template>
-
 <script>
 import axios from "axios";
-import { defineComponent } from 'vue';
 
-export default defineComponent({
+export default {
   data() {
     return {
       search: "",
-      headers: [
-        { title: "Codigo de pedido", value: "codigoPedido" },
-        { title: "Cliente", value: "nombreCliente" },
-        { title: "Estado de pedido", value: "estadoPedido" },
-        { title: "Codigo de producto", value: "codigoProducto" },
-        { title: "Acciones", value: "actions", sortable: false },
-      ],
       pedidos: [],
+      headers: [
+        { text: "Código de Pedido", value: "codigoPedido" },
+        { text: "Nombre del Cliente", value: "nombreCliente" },
+        { text: "Estado del Pedido", value: "estadoPedido" },
+        { text: "Acciones", value: "actions", sortable: false },
+      ],
       nuevoPedidoDialog: false,
       editarPedidoDialog: false,
       dialogExportarPedidos: false,
-      exportFormat: "excel",
       detallePedidoDialog: false,
+      exportFormat: "",
+      contadorPedidos: null, // Inicializar contador de pedidos como null para detectar si se ha cargado
       nuevoPedido: {
-        codigoPedido: "",
+        codigoPedido: null, // Inicializamos como null para generarlo automáticamente
         nombreCliente: "",
         estadoPedido: "",
-        codigoProducto: "",
         productos: [],
         observacion: "",
       },
       pedidoSeleccionado: {
+        id: "",
+        codigoPedido: "",
+        nombreCliente: "",
+        estadoPedido: "",
+        productos: [],
+        observacion: "",
+      },
+      detallePedido: {
         codigoPedido: "",
         nombreCliente: "",
         estadoPedido: "",
         codigoProducto: "",
-        productos: [],
+        cantidad: {
+          kilos: "",
+          unidades: "",
+        },
         observacion: "",
       },
-      detallePedido: null,
     };
   },
   methods: {
-    async fetchPedidos() {
+    async obtenerPedidos() {
       try {
         const response = await axios.get("http://localhost:3000/api/pedidos");
         this.pedidos = response.data;
+        // Actualizar el contador de pedidos basado en el número total de pedidos
+        this.contadorPedidos = this.pedidos.length + 1;
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error al obtener los pedidos:", error);
       }
     },
     async crearPedido() {
       try {
-        console.log("Creating Pedido:", this.nuevoPedido);
-        await axios.post("http://localhost:3000/api/pedidos/register", this.nuevoPedido);
+        // Generar código de pedido como PEDIDO-NUMERO
+        this.nuevoPedido.codigoPedido = `PEDIDO-${this.contadorPedidos}`;
+
+        const response = await axios.post("http://localhost:3000/api/pedidos/register", {
+          codigoPedido: this.nuevoPedido.codigoPedido,
+          nombreCliente: this.nuevoPedido.nombreCliente,
+          estadoPedido: this.nuevoPedido.estadoPedido,
+          observacion: this.nuevoPedido.observacion,
+          productos: this.nuevoPedido.productos,
+        });
+
+        alert(response.data.msg);
         this.nuevoPedidoDialog = false;
-        this.fetchPedidos();
-        this.nuevoPedido = {
-          codigoPedido: "",
-          nombreCliente: "",
-          estadoPedido: "",
-          codigoProducto: "",
-          productos: [],
-          observacion: "",
-        };
+        this.obtenerPedidos(); // Actualizar la lista de pedidos después de crear uno nuevo
+        this.limpiarFormularioNuevoPedido();
       } catch (error) {
-        console.error("Error creating pedido:", error);
-      }
-    },
-    async abrirDialogoEditarPedido(pedido) {
-      this.pedidoSeleccionado = { ...pedido };
-      this.editarPedidoDialog = true;
-      console.log("Editing Pedido:", this.pedidoSeleccionado);
-    },
-    async verDetallePedido(pedido) {
-      try {
-        const response = await axios.get(`http://localhost:3000/api/pedidos/${pedido._id}`);
-        this.detallePedido = response.data;
-        this.detallePedidoDialog = true;
-        console.log("Pedido Detail:", this.detallePedido);
-      } catch (error) {
-        console.error("Error fetching pedido detail:", error);
+        console.error("Error al crear el pedido:", error);
       }
     },
     async actualizarPedido() {
       try {
-        console.log("Updating Pedido:", this.pedidoSeleccionado);
-        await axios.put(`http://localhost:3000/api/pedidos/${this.pedidoSeleccionado._id}`, this.pedidoSeleccionado);
+        await axios.put(`http://localhost:3000/api/pedidos/${this.pedidoSeleccionado.id}`, {
+          codigoPedido: this.pedidoSeleccionado.codigoPedido,
+          nombreCliente: this.pedidoSeleccionado.nombreCliente,
+          estadoPedido: this.pedidoSeleccionado.estadoPedido,
+          observacion: this.pedidoSeleccionado.observacion,
+          productos: this.pedidoSeleccionado.productos,
+        });
+        alert("Pedido actualizado correctamente");
         this.editarPedidoDialog = false;
-        this.fetchPedidos();
+        this.obtenerPedidos(); // Actualizar la lista de pedidos después de editar uno
       } catch (error) {
-        console.error("Error updating pedido:", error);
+        console.error("Error al actualizar el pedido:", error);
       }
     },
-    async eliminarPedido(pedido) {
+    async eliminarPedido(id) {
       try {
-        await axios.delete(`http://localhost:3000/api/pedidos/${pedido._id}`);
-        this.fetchPedidos();
+        await axios.delete(`http://localhost:3000/api/pedidos/${id}`);
+        alert("Pedido eliminado correctamente");
+        this.obtenerPedidos(); // Actualizar la lista de pedidos después de eliminar uno
       } catch (error) {
-        console.error("Error deleting pedido:", error);
+        console.error("Error al eliminar el pedido:", error);
       }
     },
     async exportarPedidos() {
-      if (this.exportFormat === "excel") {
-        this.exportarPedidosExcel();
-      } else if (this.exportFormat === "pdf") {
-        this.exportarPedidosPDF();
-      }
-    },
-    async exportarPedidosExcel() {
       try {
-        const response = await axios.get("http://localhost:3000/api/pedidos/export-excel", { responseType: "blob" });
-        const blob = new Blob([response.data], { type: response.headers["content-type"] });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "pedidos.xlsx");
-        document.body.appendChild(link);
-        link.click();
+        // Lógica para exportar pedidos según el formato seleccionado (this.exportFormat)
+        // Aquí deberías implementar la lógica para exportar a Excel o PDF, utilizando una librería adecuada
+        alert(`Exportando pedidos en formato ${this.exportFormat}`);
+        this.dialogExportarPedidos = false;
       } catch (error) {
-        console.error("Error exporting pedidos to Excel:", error);
+        console.error("Error al exportar los pedidos:", error);
       }
     },
-    async exportarPedidosPDF() {
-      try {
-        const response = await axios.get("http://localhost:3000/api/pedidos/export-pdf", { responseType: "blob" });
-        const blob = new Blob([response.data], { type: response.headers["content-type"] });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "pedidos.pdf");
-        document.body.appendChild(link);
-        link.click();
-      } catch (error) {
-        console.error("Error exporting pedidos to PDF:", error);
-      }
+    addProducto() {
+      this.nuevoPedido.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
     },
-    cancelarNuevoPedido() {
-      this.nuevoPedido = {
+    removeProducto(index) {
+      this.nuevoPedido.productos.splice(index, 1);
+    },
+    addProductoEdicion() {
+      this.pedidoSeleccionado.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
+    },
+    removeProductoEdicion(index) {
+      this.pedidoSeleccionado.productos.splice(index, 1);
+    },
+    abrirDialogoEditarPedido(item) {
+      this.editarPedidoDialog = true;
+      this.pedidoSeleccionado.id = item._id;
+      this.pedidoSeleccionado.codigoPedido = item.codigoPedido;
+      this.pedidoSeleccionado.nombreCliente = item.nombreCliente;
+      this.pedidoSeleccionado.estadoPedido = item.estadoPedido;
+      this.pedidoSeleccionado.productos = item.productos;
+      this.pedidoSeleccionado.observacion = item.observacion;
+    },
+    verDetallePedido(item) {
+      this.detallePedidoDialog = true;
+      this.detallePedido.codigoPedido = item.codigoPedido;
+      this.detallePedido.nombreCliente = item.nombreCliente;
+      this.detallePedido.estadoPedido = item.estadoPedido;
+      this.detallePedido.codigoProducto = item.productos.map(prod => prod.producto_id).join(", ");
+      this.detallePedido.cantidad.kilos = item.productos.map(prod => prod.cantidad).reduce((acc, val) => acc + val, 0);
+      this.detallePedido.cantidad.unidades = item.productos.length;
+      this.detallePedido.observacion = item.observacion;
+    },
+    cerrarVerPedido() {
+      this.detallePedidoDialog = false;
+      this.detallePedido = {
         codigoPedido: "",
         nombreCliente: "",
         estadoPedido: "",
         codigoProducto: "",
+        cantidad: {
+          kilos: "",
+          unidades: "",
+        },
+        observacion: "",
+      };
+    },
+    cancelarNuevoPedido() {
+      this.limpiarFormularioNuevoPedido();
+      this.nuevoPedidoDialog = false;
+    },
+    limpiarFormularioNuevoPedido() {
+      this.nuevoPedido = {
+        codigoPedido: null, // Reiniciamos a null para la próxima generación automática
+        nombreCliente: "",
+        estadoPedido: "",
         productos: [],
         observacion: "",
       };
-      this.nuevoPedidoDialog = false;
     },
     cancelarEditarPedido() {
       this.editarPedidoDialog = false;
+      this.pedidoSeleccionado = {
+        id: "",
+        codigoPedido: "",
+        nombreCliente: "",
+        estadoPedido: "",
+        productos: [],
+        observacion: "",
+      };
     },
-    cerrarVerPedido() {
-      this.detallePedidoDialog = false;
-    },
-    addProducto() {
-      this.nuevoPedido.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
-      console.log("Added product to new order:", this.nuevoPedido.productos);
-    },
-    removeProducto(index) {
-      this.nuevoPedido.productos.splice(index, 1);
-      console.log("Removed product from new order:", this.nuevoPedido.productos);
-    },
-    addProductoEdicion() {
-      if (!this.pedidoSeleccionado.productos) {
-        this.pedidoSeleccionado.productos = [];
-      }
-      this.pedidoSeleccionado.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
-      console.log("Added product to existing order:", this.pedidoSeleccionado.productos);
-    },
-    removeProductoEdicion(index) {
-      this.pedidoSeleccionado.productos.splice(index, 1);
-      console.log("Removed product from existing order:", this.pedidoSeleccionado.productos);
-    }
   },
   mounted() {
-    this.fetchPedidos();
+    this.obtenerPedidos();
   },
-});
+};
 </script>
 
-<style>
+
+
+
+
+
+<style scoped>
 .container-tabla-pedidos {
-  width: 100%;
   padding: 20px;
 }
-
 .container-header-table {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 30px;
 }
 </style>
