@@ -24,6 +24,7 @@
           </template>
         </v-data-table>
       </v-card>
+
       <!-- Diálogo para nuevo pedido -->
       <v-dialog v-model="nuevoPedidoDialog" max-width="800px">
         <v-card>
@@ -67,6 +68,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
       <!-- Diálogo para editar pedido -->
       <v-dialog v-model="editarPedidoDialog" max-width="700px">
         <v-card>
@@ -112,6 +114,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
       <!-- Diálogo para exportar pedidos -->
       <v-dialog v-model="dialogExportarPedidos" max-width="500px">
         <v-card>
@@ -128,6 +131,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
       <!-- Otros diálogos -->
       <!-- Diálogo para ver detalle del pedido -->
       <v-dialog v-model="detallePedidoDialog" max-width="500px">
@@ -168,15 +172,14 @@
               </v-list-item>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title>Observacion:</v-list-item-title>
+                  <v-list-item-title>Observación:</v-list-item-title>
                   <v-list-item-subtitle>{{ detallePedido.observacion }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <!-- Agregar más detalles del pedido aquí según sea necesario -->
             </v-list>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="red darken-2" text @click="cerrarVerPedido">Cerrar</v-btn>
+            <v-btn color="blue darken-2" text @click="cerrarVerPedido">Cerrar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -187,9 +190,6 @@
 <script>
 import axios from "axios";
 import { defineComponent } from 'vue';
-import { useUserStore } from '@/stores/User';
-import jwt_decode from 'jwt-decode';
-import { useRouter } from 'vue-router';
 
 export default defineComponent({
   data() {
@@ -216,7 +216,14 @@ export default defineComponent({
         productos: [],
         observacion: "",
       },
-      pedidoSeleccionado: null,
+      pedidoSeleccionado: {
+        codigoPedido: "",
+        nombreCliente: "",
+        estadoPedido: "",
+        codigoProducto: "",
+        productos: [],
+        observacion: "",
+      },
       detallePedido: null,
     };
   },
@@ -231,10 +238,10 @@ export default defineComponent({
     },
     async crearPedido() {
       try {
+        console.log("Creating Pedido:", this.nuevoPedido);
         await axios.post("http://localhost:3000/api/pedidos/register", this.nuevoPedido);
         this.nuevoPedidoDialog = false;
         this.fetchPedidos();
-        // Limpiar los datos del nuevo pedido
         this.nuevoPedido = {
           codigoPedido: "",
           nombreCliente: "",
@@ -250,18 +257,21 @@ export default defineComponent({
     async abrirDialogoEditarPedido(pedido) {
       this.pedidoSeleccionado = { ...pedido };
       this.editarPedidoDialog = true;
+      console.log("Editing Pedido:", this.pedidoSeleccionado);
     },
     async verDetallePedido(pedido) {
       try {
         const response = await axios.get(`http://localhost:3000/api/pedidos/${pedido._id}`);
         this.detallePedido = response.data;
         this.detallePedidoDialog = true;
+        console.log("Pedido Detail:", this.detallePedido);
       } catch (error) {
         console.error("Error fetching pedido detail:", error);
       }
     },
     async actualizarPedido() {
       try {
+        console.log("Updating Pedido:", this.pedidoSeleccionado);
         await axios.put(`http://localhost:3000/api/pedidos/${this.pedidoSeleccionado._id}`, this.pedidoSeleccionado);
         this.editarPedidoDialog = false;
         this.fetchPedidos();
@@ -287,19 +297,11 @@ export default defineComponent({
     async exportarPedidosExcel() {
       try {
         const response = await axios.get("http://localhost:3000/api/pedidos/export-excel", { responseType: "blob" });
-
-        // Creamos un nuevo Blob con el contenido de la respuesta
         const blob = new Blob([response.data], { type: response.headers["content-type"] });
-
-        // Creamos una URL para el Blob
         const url = window.URL.createObjectURL(blob);
-
-        // Creamos un enlace temporal para descargar el archivo
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "pedidos.xlsx");
-
-        // Añadimos el enlace al documento y lo hacemos click
         document.body.appendChild(link);
         link.click();
       } catch (error) {
@@ -309,19 +311,11 @@ export default defineComponent({
     async exportarPedidosPDF() {
       try {
         const response = await axios.get("http://localhost:3000/api/pedidos/export-pdf", { responseType: "blob" });
-
-        // Creamos un nuevo Blob con el contenido de la respuesta
         const blob = new Blob([response.data], { type: response.headers["content-type"] });
-
-        // Creamos una URL para el Blob
         const url = window.URL.createObjectURL(blob);
-
-        // Creamos un enlace temporal para descargar el archivo
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "pedidos.pdf");
-
-        // Añadimos el enlace al documento y lo hacemos click
         document.body.appendChild(link);
         link.click();
       } catch (error) {
@@ -329,7 +323,6 @@ export default defineComponent({
       }
     },
     cancelarNuevoPedido() {
-      // Limpiar los datos del nuevo pedido al cancelar
       this.nuevoPedido = {
         codigoPedido: "",
         nombreCliente: "",
@@ -348,15 +341,22 @@ export default defineComponent({
     },
     addProducto() {
       this.nuevoPedido.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
+      console.log("Added product to new order:", this.nuevoPedido.productos);
     },
     removeProducto(index) {
       this.nuevoPedido.productos.splice(index, 1);
+      console.log("Removed product from new order:", this.nuevoPedido.productos);
     },
     addProductoEdicion() {
+      if (!this.pedidoSeleccionado.productos) {
+        this.pedidoSeleccionado.productos = [];
+      }
       this.pedidoSeleccionado.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
+      console.log("Added product to existing order:", this.pedidoSeleccionado.productos);
     },
     removeProductoEdicion(index) {
       this.pedidoSeleccionado.productos.splice(index, 1);
+      console.log("Removed product from existing order:", this.pedidoSeleccionado.productos);
     }
   },
   mounted() {
