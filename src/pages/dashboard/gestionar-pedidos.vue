@@ -186,12 +186,12 @@
 
 <script>
 import axios from "axios";
-import { ref, computed, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 import { useUserStore } from '@/stores/User';
 import jwt_decode from 'jwt-decode';
 import { useRouter } from 'vue-router';
 
-export default {
+export default defineComponent({
   data() {
     return {
       search: "",
@@ -229,7 +229,6 @@ export default {
         console.error("Error fetching data:", error);
       }
     },
-
     async crearPedido() {
       try {
         await axios.post("http://localhost:3000/api/pedidos/register", this.nuevoPedido);
@@ -363,7 +362,7 @@ export default {
   mounted() {
     this.fetchPedidos();
   },
-};
+});
 </script>
 
 <style>
