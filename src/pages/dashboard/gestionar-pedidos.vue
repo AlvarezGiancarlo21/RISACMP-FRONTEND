@@ -1,207 +1,195 @@
 <template>
   <v-card>
-  <div class="container-tabla-pedidos">
-    <v-card flat>
-      <template v-slot:text>
-        <div class="container-header-table">
-          <v-text-field
-            v-model="search"
-            label="Buscar"
-            prepend-inner-icon="mdi-magnify"
-            variant="outlined"
-            hide-details
-          ></v-text-field>
-          <v-btn icon="mdi-export" color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
-          <v-btn  prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
-            Registrar Pedido
-          </v-btn>
-        </div> 
-      </template>
-      <v-data-table :headers="headers" :items="pedidos" :search="search">
-        <template v-slot:item.actions="{ item }">
-          <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
-          <v-icon  @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
+    <div class="container-tabla-pedidos">
+      <v-card flat>
+        <template v-slot:text>
+          <div class="container-header-table">
+            <v-text-field
+              v-model="search"
+              label="Buscar"
+              prepend-inner-icon="mdi-magnify"
+              variant="outlined"
+              hide-details
+            ></v-text-field>
+            <v-btn icon="mdi-export" color="green darken-2" @click="dialogExportarPedidos = true"></v-btn>
+            <v-btn prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
+              Registrar Pedido
+            </v-btn>
+          </div>
         </template>
-      </v-data-table>
-    </v-card>
-    <!-- Diálogo para nuevo pedido -->
-    <v-dialog v-model="nuevoPedidoDialog" max-width="800px">
-      <v-card>
-        <v-card-title>Nuevo Pedido</v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="nuevoPedido.codigoPedido" label="Código de Pedido"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="nuevoPedido.nombreCliente" label="Nombre del Cliente"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-select clearable v-model="nuevoPedido.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="nuevoPedido.codigoProducto" label="Código del Producto"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-              <span style="text-align: center;">Cantidad</span>
+        <v-data-table :headers="headers" :items="pedidos" :search="search">
+          <template v-slot:item.actions="{ item }">
+            <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
+            <v-icon @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
+          </template>
+        </v-data-table>
+      </v-card>
+      <!-- Diálogo para nuevo pedido -->
+      <v-dialog v-model="nuevoPedidoDialog" max-width="800px">
+        <v-card>
+          <v-card-title>Nuevo Pedido</v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col>
+                <v-text-field v-model="nuevoPedido.codigoPedido" label="Código de Pedido"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="nuevoPedido.nombreCliente" label="Nombre del Cliente"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-select clearable v-model="nuevoPedido.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+              </v-col>
             </v-row>
-          <v-row>
-
-            <v-col>
-              <v-text-field v-model="nuevoPedido.cantidad.kilos" label="Kilos"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="nuevoPedido.cantidad.unidades" label="Unidades"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-textarea v-model="nuevoPedido.observacion" label="Observación"></v-textarea>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="blue darken-2" text @click="crearPedido">Guardar</v-btn>
-          <v-btn color="red darken-2" text @click="cancelarNuevoPedido">Cancelar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <!-- Diálogo para editar pedido -->
-    <v-dialog v-model="editarPedidoDialog" max-width="700px">
-      <v-card>
-        <v-card-title>Editar Pedido</v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="pedidoSeleccionado.codigoPedido" label="Código de Pedido"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="pedidoSeleccionado.nombreCliente" label="Nombre del Cliente"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-select clearable v-model="pedidoSeleccionado.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="pedidoSeleccionado.codigoProducto" label="Código del Producto"></v-text-field>          
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="pedidoSeleccionado.cantidad.kilos" label="Cantidad en Kilos"></v-text-field>
-            </v-col>
-            <v-col>
-              <v-text-field v-model="pedidoSeleccionado.cantidad.unidades" label="Cantidad en Unidades"></v-text-field>          
-            </v-col>
-          </v-row>
-          <v-textarea v-model="pedidoSeleccionado.observacion" label="Observación"></v-textarea>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="blue darken-2" text @click="actualizarPedido">Guardar</v-btn>
-          <v-btn color="red darken-2" text @click="cancelarEditarPedido">Cancelar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <!-- Diálogo para exportar pedidos -->
-    <v-dialog v-model="dialogExportarPedidos" max-width="500px">
-      <v-card>
-        <v-card-title>Exportar Pedidos</v-card-title>
-        <v-card-text>
-          <v-radio-group v-model="exportFormat">
-            <v-radio value="excel" label="Exportar a Excel"></v-radio>
-            <v-radio value="pdf" label="Exportar a PDF"></v-radio>
-          </v-radio-group>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="blue darken-2" text @click="exportarPedidos">Exportar</v-btn>
-          <v-btn color="red darken-2" text @click="dialogExportarPedidos = false">Cancelar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <!-- Otros diálogos -->
-         <!-- Diálogo para ver detalle del pedido -->
-    <v-dialog v-model="detallePedidoDialog" max-width="500px">
-      <v-card>
-        <v-card-title>Detalle del Pedido</v-card-title>
-        <v-card-text>
-          <v-list>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Código de Pedido:</v-list-item-title>
-                <v-list-item-subtitle>{{ detallePedido.codigoPedido }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Nombre del Cliente:</v-list-item-title>
-                <v-list-item-subtitle>{{ detallePedido.nombreCliente }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Estado del Pedido:</v-list-item-title>
-                <v-list-item-subtitle>{{ detallePedido.estadoPedido }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Código del Producto:</v-list-item-title>
-                <v-list-item-subtitle>{{ detallePedido.codigoProducto }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Cantidad:</v-list-item-title>
-                <v-list-item-subtitle>Peso en Kilos : {{ detallePedido.cantidad.kilos }} kg</v-list-item-subtitle>
-                <v-list-item-subtitle>Unidades : {{ detallePedido.cantidad.unidades }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Observacion:</v-list-item-title>
-                <v-list-item-subtitle>{{ detallePedido.observacion }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <!-- Agregar más detalles del pedido aquí según sea necesario -->
-          </v-list>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="red darken-2" text @click="cerrarVerPedido">Cerrar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
-</v-card>
+            <v-row>
+              <v-col>
+                <v-btn @click="addProducto" color="blue darken-2">Añadir Producto</v-btn>
+              </v-col>
+            </v-row>
+            <v-row v-for="(producto, index) in nuevoPedido.productos" :key="index">
+              <v-col>
+                <v-text-field v-model="producto.producto_id" label="ID del Producto"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="producto.cantidad" label="Cantidad"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="producto.unidad_medida_id" label="Unidad de Medida"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-btn icon="mdi-delete" color="red darken-2" @click="removeProducto(index)"></v-btn>
+              </v-col>
+            </v-row>
+            <v-textarea v-model="nuevoPedido.observacion" label="Observación"></v-textarea>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="blue darken-2" text @click="crearPedido">Guardar</v-btn>
+            <v-btn color="red darken-2" text @click="cancelarNuevoPedido">Cancelar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- Diálogo para editar pedido -->
+      <v-dialog v-model="editarPedidoDialog" max-width="700px">
+        <v-card>
+          <v-card-title>Editar Pedido</v-card-title>
+          <v-card-text>
+            <v-row>
+              <v-col>
+                <v-text-field v-model="pedidoSeleccionado.codigoPedido" label="Código de Pedido"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="pedidoSeleccionado.nombreCliente" label="Nombre del Cliente"></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-select clearable v-model="pedidoSeleccionado.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-btn @click="addProductoEdicion" color="blue darken-2">Añadir Producto</v-btn>
+              </v-col>
+            </v-row>
+            <v-row v-for="(producto, index) in pedidoSeleccionado.productos" :key="index">
+              <v-col>
+                <v-text-field v-model="producto.producto_id" label="ID del Producto"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="producto.cantidad" label="Cantidad"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field v-model="producto.unidad_medida_id" label="Unidad de Medida"></v-text-field>
+              </v-col>
+              <v-col>
+                <v-btn icon="mdi-delete" color="red darken-2" @click="removeProductoEdicion(index)"></v-btn>
+              </v-col>
+            </v-row>
+            <v-textarea v-model="pedidoSeleccionado.observacion" label="Observación"></v-textarea>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="blue darken-2" text @click="actualizarPedido">Guardar</v-btn>
+            <v-btn color="red darken-2" text @click="cancelarEditarPedido">Cancelar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- Diálogo para exportar pedidos -->
+      <v-dialog v-model="dialogExportarPedidos" max-width="500px">
+        <v-card>
+          <v-card-title>Exportar Pedidos</v-card-title>
+          <v-card-text>
+            <v-radio-group v-model="exportFormat">
+              <v-radio value="excel" label="Exportar a Excel"></v-radio>
+              <v-radio value="pdf" label="Exportar a PDF"></v-radio>
+            </v-radio-group>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="blue darken-2" text @click="exportarPedidos">Exportar</v-btn>
+            <v-btn color="red darken-2" text @click="dialogExportarPedidos = false">Cancelar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- Otros diálogos -->
+      <!-- Diálogo para ver detalle del pedido -->
+      <v-dialog v-model="detallePedidoDialog" max-width="500px">
+        <v-card>
+          <v-card-title>Detalle del Pedido</v-card-title>
+          <v-card-text>
+            <v-list>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Código de Pedido:</v-list-item-title>
+                  <v-list-item-subtitle>{{ detallePedido.codigoPedido }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Nombre del Cliente:</v-list-item-title>
+                  <v-list-item-subtitle>{{ detallePedido.nombreCliente }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Estado del Pedido:</v-list-item-title>
+                  <v-list-item-subtitle>{{ detallePedido.estadoPedido }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Código del Producto:</v-list-item-title>
+                  <v-list-item-subtitle>{{ detallePedido.codigoProducto }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Cantidad:</v-list-item-title>
+                  <v-list-item-subtitle>Peso en Kilos : {{ detallePedido.cantidad.kilos }} kg</v-list-item-subtitle>
+                  <v-list-item-subtitle>Unidades : {{ detallePedido.cantidad.unidades }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>Observacion:</v-list-item-title>
+                  <v-list-item-subtitle>{{ detallePedido.observacion }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <!-- Agregar más detalles del pedido aquí según sea necesario -->
+            </v-list>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="red darken-2" text @click="cerrarVerPedido">Cerrar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+  </v-card>
 </template>
 
 <script>
 import axios from "axios";
-
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/User';
-import { computed } from 'vue';
-import { onMounted } from 'vue';
-import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el token JWT
-const userStore = useUserStore();
-const role = computed(() => userStore.user.role);
-const nombres=computed(()=> userStore.user.nombres);
-const apellidos=computed(()=>userStore.user.apellidos);
+import jwt_decode from 'jwt-decode';
 import { useRouter } from 'vue-router';
-// import AppFooter from '@/components/AppFooter.vue';
-
-const router = useRouter();
-// Recuperar la información de sesión del usuario cuando el componente se monta
-onMounted(() => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    // Decodificar el token para obtener la información del usuario
-    const decodedToken = jwt_decode(token);
-    const role = decodedToken.user.role;
-    const username = decodedToken.user.username;
-    const nombres =decodedToken.user.nombres;
-    const apellidos=decodedToken.user.apellidos;
-    // Establecer la información del usuario en el store
-    userStore.setUserRole(role, username,nombres,apellidos);
-  }
-});
 
 export default {
   data() {
@@ -225,13 +213,11 @@ export default {
         nombreCliente: "",
         estadoPedido: "",
         codigoProducto: "",
-        cantidad: {
-          kilos: null,
-          unidades: null,
-        },
+        productos: [],
         observacion: "",
       },
       pedidoSeleccionado: null,
+      detallePedido: null,
     };
   },
   methods: {
@@ -255,10 +241,7 @@ export default {
           nombreCliente: "",
           estadoPedido: "",
           codigoProducto: "",
-          cantidad: {
-            kilos: null,
-            unidades: null,
-          },
+          productos: [],
           observacion: "",
         };
       } catch (error) {
@@ -353,10 +336,7 @@ export default {
         nombreCliente: "",
         estadoPedido: "",
         codigoProducto: "",
-        cantidad: {
-          kilos: null,
-          unidades: null,
-        },
+        productos: [],
         observacion: "",
       };
       this.nuevoPedidoDialog = false;
@@ -364,8 +344,20 @@ export default {
     cancelarEditarPedido() {
       this.editarPedidoDialog = false;
     },
-    cerrarVerPedido(){
-      this.detallePedidoDialog=false;
+    cerrarVerPedido() {
+      this.detallePedidoDialog = false;
+    },
+    addProducto() {
+      this.nuevoPedido.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
+    },
+    removeProducto(index) {
+      this.nuevoPedido.productos.splice(index, 1);
+    },
+    addProductoEdicion() {
+      this.pedidoSeleccionado.productos.push({ producto_id: "", cantidad: "", unidad_medida_id: "" });
+    },
+    removeProductoEdicion(index) {
+      this.pedidoSeleccionado.productos.splice(index, 1);
     }
   },
   mounted() {
