@@ -85,7 +85,7 @@
       <!--Drawer expandido Productos-->
       <v-navigation-drawer floating permanent v-model="drawer2" style="background-color:aliceblue;" @mouseenter="cancelHideTimer()" @mouseleave="startHideTimer()">
         <v-list  density="compact" nav>
-          <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" ></v-list-item>
+          <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" to="/dashboard/gestionar-producto"></v-list-item>
 
           <v-list-item title="Materia Prima" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
 
