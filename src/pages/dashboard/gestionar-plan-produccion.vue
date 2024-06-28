@@ -124,7 +124,7 @@
                   <v-combobox
                     v-model="trabajoSeleccionado.estado"
                     cleareable
-                    :items="['Planificado', 'En progreso', 'Finalizado']"
+                    :items="['Planificado', 'EN ESPERA', 'FINALIZADA']"
                   >
                   </v-combobox>
                 </v-col>
@@ -184,7 +184,7 @@
             <td v-for="header in headers.slice(1)" :key="header.key">
               <v-sheet
                 v-if="item.dias.includes(parseInt(header.key))"
-                class="h-100 w-100"
+                class="h-100 w-100 cursor-pointer"
                 :color="item.color"
                 @click="
                   () => {
