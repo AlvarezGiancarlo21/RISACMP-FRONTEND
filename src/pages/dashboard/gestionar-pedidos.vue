@@ -4,13 +4,8 @@
       <v-card flat>
         <template v-slot:text>
           <div class="container-header-table">
-            <v-text-field
-              v-model="search"
-              label="Buscar"
-              prepend-inner-icon="mdi-magnify"
-              variant="outlined"
-              hide-details
-            ></v-text-field>
+            <v-text-field v-model="search" label="Buscar" prepend-inner-icon="mdi-magnify" variant="outlined"
+              hide-details></v-text-field>
             <v-btn icon color="green darken-2" @click="dialogExportarPedidos = true">
               <v-icon>mdi-export</v-icon>
             </v-btn>
@@ -20,10 +15,12 @@
           </div>
         </template>
         <v-data-table :headers="headers" :items="pedidos" :search="search">
+
           <template v-slot:item.actions="{ item }">
             <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
             <v-icon @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
           </template>
+          
         </v-data-table>
       </v-card>
 
@@ -40,34 +37,37 @@
                 <v-text-field v-model="nuevoPedido.nombreCliente" label="Nombre del Cliente"></v-text-field>
               </v-col>
               <v-col>
-                <v-select v-model="nuevoPedido.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+                <v-select v-model="nuevoPedido.estadoPedido" label="Estado del pedido"
+                  :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
               </v-col>
             </v-row>
             <v-divider :thickness="12" class="border-opacity-0"></v-divider>
             <v-card>
               <v-divider :thickness="12" class="border-opacity-0"></v-divider>
-            <v-row>
-              <v-col>
-                <v-btn @click="addProducto" color="blue darken-2">Añadir Producto</v-btn>
-              </v-col>
-            </v-row>
+              <v-row>
+                <v-col>
+                  <v-btn @click="addProducto" color="blue darken-2">Añadir Producto</v-btn>
+                </v-col>
+              </v-row>
+              <v-divider :thickness="12" class="border-opacity-0"></v-divider>
+              <v-row v-for="(producto, index) in nuevoPedido.productos" :key="index">
+                <v-col cols="12" md="4" sm="6">
+                  <v-select v-model="producto.producto_id" :items="productos" item-title="nombre" item-value="id"
+                    label="Productos con receta" required></v-select>
+                </v-col>
+                <v-col>
+                  <v-text-field v-model="producto.cantidad" label="Cantidad"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="4" sm="6">
+                  <v-select v-model="producto.unidad_medida_id" :items="unidadesDeMedida" item-title="nombre"
+                    item-value="id" label="Unidad de Medida" required></v-select>
+                </v-col>
+                <v-col>
+                  <v-btn icon @click="removeProducto(index)" color="red darken-2"><v-icon>mdi-delete</v-icon></v-btn>
+                </v-col>
+              </v-row>
+            </v-card>
             <v-divider :thickness="12" class="border-opacity-0"></v-divider>
-            <v-row v-for="(producto, index) in nuevoPedido.productos" :key="index">
-              <v-col>
-                <v-text-field v-model="producto.producto_id" label="ID del Producto"></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="producto.cantidad" label="Cantidad"></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="producto.unidad_medida_id" label="Unidad de Medida"></v-text-field>
-              </v-col>
-              <v-col>
-                <v-btn icon @click="removeProducto(index)" color="red darken-2"><v-icon>mdi-delete</v-icon></v-btn>
-              </v-col>
-            </v-row>
-          </v-card>
-          <v-divider :thickness="12" class="border-opacity-0"></v-divider>
             <v-textarea v-model="nuevoPedido.observacion" label="Observación"></v-textarea>
           </v-card-text>
           <v-card-actions>
@@ -92,7 +92,8 @@
             </v-row>
             <v-row>
               <v-col>
-                <v-select v-model="pedidoSeleccionado.estadoPedido" label="Estado del pedido" :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
+                <v-select v-model="pedidoSeleccionado.estadoPedido" label="Estado del pedido"
+                  :items="['Pendiente', 'En proceso', 'Terminado']"></v-select>
               </v-col>
             </v-row>
             <v-row>
@@ -111,7 +112,8 @@
                 <v-text-field v-model="producto.unidad_medida_id" label="Unidad de Medida"></v-text-field>
               </v-col>
               <v-col>
-                <v-btn icon @click="removeProductoEdicion(index)" color="red darken-2"><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn icon @click="removeProductoEdicion(index)"
+                  color="red darken-2"><v-icon>mdi-delete</v-icon></v-btn>
               </v-col>
             </v-row>
             <v-textarea v-model="pedidoSeleccionado.observacion" label="Observación"></v-textarea>
@@ -195,17 +197,19 @@
 </template>
 <script>
 import axios from "axios";
-
+import * as serviciosUnidad from '../../services/unidadMedidaService';
+import * as serviciosProducto from '../../services/s_productos';
+import * as serviciosPedido from '../../services/s_pedidos';
 export default {
   data() {
     return {
       search: "",
       pedidos: [],
       headers: [
-        { text: "Código de Pedido", value: "codigoPedido" },
-        { text: "Nombre del Cliente", value: "nombreCliente" },
-        { text: "Estado del Pedido", value: "estadoPedido" },
-        { text: "Acciones", value: "actions", sortable: false },
+        { title: "Código de Pedido", value: "codigoPedido" },
+        { title: "Nombre del Cliente", value: "nombreCliente" },
+        { title: "Estado del Pedido", value: "estadoPedido" },
+        { title: "Acciones", value: "actions", sortable: false },
       ],
       nuevoPedidoDialog: false,
       editarPedidoDialog: false,
@@ -239,6 +243,8 @@ export default {
         },
         observacion: "",
       },
+      unidadesDeMedida: [{}],
+      productos: [{}],
     };
   },
   methods: {
@@ -252,20 +258,50 @@ export default {
         console.error("Error al obtener los pedidos:", error);
       }
     },
+    async obtenerUnidades() {
+      try {
+        const unidades = await serviciosUnidad.obtenerUnidadesDeMedida();
+        let i = 0;
+
+        this.unidadesDeMedida = unidades.map(unidad => ({
+          id: unidad._id,
+          nombre: unidad.nombre
+        }));
+      } catch (error) {
+        this.errorMessage = error.message;
+        this.isAlertVisible = true;
+      }
+
+    },
+    async obtenerProductos() {
+      try {
+        const productos = await serviciosProducto.obtenerProductos();
+        const productosConReceta = productos.filter(producto => producto.hasReceta);
+        this.productos = productosConReceta.map(producto => ({
+          id: producto.id,
+          nombre: producto.nombre
+        }));
+      } catch (error) {
+        this.errorMessage = error.message;
+        this.isAlertVisible = true;
+      }
+
+    },
     async crearPedido() {
       try {
         // Generar código de pedido como PEDIDO-NUMERO
         this.nuevoPedido.codigoPedido = `PEDIDO-${this.contadorPedidos}`;
-
-        const response = await axios.post("http://localhost:3000/api/pedidos/register", {
+        const datos = {
           codigoPedido: this.nuevoPedido.codigoPedido,
           nombreCliente: this.nuevoPedido.nombreCliente,
           estadoPedido: this.nuevoPedido.estadoPedido,
           observacion: this.nuevoPedido.observacion,
           productos: this.nuevoPedido.productos,
-        });
+        }
+        console.log(datos);
+        const response = await serviciosPedido.registrarPedido(datos);
 
-        alert(response.data.msg);
+        alert(response.msg);
         this.nuevoPedidoDialog = false;
         this.obtenerPedidos(); // Actualizar la lista de pedidos después de crear uno nuevo
         this.limpiarFormularioNuevoPedido();
@@ -380,6 +416,8 @@ export default {
   },
   mounted() {
     this.obtenerPedidos();
+    this.obtenerUnidades();
+    this.obtenerProductos();
   },
 };
 </script>
@@ -393,6 +431,7 @@ export default {
 .container-tabla-pedidos {
   padding: 20px;
 }
+
 .container-header-table {
   display: flex;
   justify-content: space-between;
