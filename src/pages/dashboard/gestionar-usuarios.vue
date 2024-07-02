@@ -333,11 +333,11 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const headersTableUsuario = [
-  { text: 'Usuario', value: 'username' },
-  { text: 'Nombres', value: 'nombres' },
-  { text: 'Apellidos', value: 'apellidos' },
-  { text: 'Rol', value: 'role' },
-  { text: 'Acciones', value: 'actions', sortable: false },
+  { title: 'Usuario', value: 'username' },
+  { title: 'Nombres', value: 'nombres' },
+  { title: 'Apellidos', value: 'apellidos' },
+  { title: 'Rol', value: 'role' },
+  { title: 'Acciones', value: 'actions', sortable: false },
 ];
 
 const usuarios = ref([]);
