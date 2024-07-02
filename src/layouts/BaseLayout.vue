@@ -86,7 +86,7 @@
         <v-list  density="compact" nav>
           <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" to="/dashboard/gestionar-producto"></v-list-item>
 
-          <v-list-item title="Materia Prima" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
+          <v-list-item to="/dashboard/reque-materia-prima" title="Materia Prima" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
 
           <v-list-item title="Inventario" value="settings" prepend-icon="mdi-cog"></v-list-item>
         </v-list>
@@ -115,7 +115,7 @@
 
           <!--Encargado de Produccion-->
           <!-- <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/gestionar-orden-trabajo" title="Ordenes de Trabajo" value="oTrabajo" prepend-icon="mdi-format-indent-decrease" ></v-list-item> -->
-          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/materia-prima" title="Materia Prima" value="mPrima" prepend-icon="mdi-food-steak" ></v-list-item>
+          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/reque-materia-prima" title="Materia Prima" value="mPrima" prepend-icon="mdi-food-steak" ></v-list-item>
           <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/productos-terminados" title="Productos Terminados" value="pTerminados" prepend-icon="mdi-package-variant-closed-check" ></v-list-item>
         </v-list>
       </v-navigation-drawer>
