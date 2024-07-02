@@ -1,11 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-    <div style="background-color: #757575;">
 
   <v-app>
     <v-layout>
       <!--Drawer 1-->
-      <div>
+
       <v-navigation-drawer
         permanent
         v-model="drawer1"
@@ -63,15 +62,7 @@
           <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-list-box" title="Facturas" to="/dashboard/gestion-facturas" ></v-list-item>
           <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-credit-card-edit" title="Nota de Credito" to="/dashboard/nota-de-credito" ></v-list-item>
           <v-list-item v-if="role === 'Logistico'" class="item" prepend-icon="mdi-shopping" title="Ordenes de Compra" to="/dashboard/ordenes-compras" ></v-list-item>
-          <!----------------->
           <v-list-item v-if="role === 'Calidad'" class="item" prepend-icon="mdi-gavel" title="Validar Prductos" to="/dashboard/validar-productos"></v-list-item>
-          <!-- <v-list-item class="item" title="Mensajes" prepend-icon="mdi-forum" value="messages"></v-list-item> -->
-          <!-- <v-list-item v-if="role === 'Jefe de Planta'"  class="item" prepend-icon="mdi-home-city" title="Funcionalidad Jefe" value="home" ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-folder-multiple" title="Servicios" value="services"  ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-account-group-outline" title="Users" value="users" to="/dashboard/users"></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-logout" title="Salir" value="signout"  ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-home-city" title="Inicio" value="home" ></v-list-item> -->
-          <!-- <v-list-item class="item" prepend-icon="mdi-account" title="Mi cuenta" value="account" to="/dashboard/account" ></v-list-item> -->
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-account-group-outline" title="Usuarios" value="users" to="/dashboard/gestionar-usuarios"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta'" class="item" prepend-icon="mdi-gavel" title="Admin"></v-list-item>
 
@@ -93,9 +84,9 @@
       <!--Drawer expandido Productos-->
       <v-navigation-drawer floating permanent v-model="drawer2" style="background-color:aliceblue;" @mouseenter="cancelHideTimer()" @mouseleave="startHideTimer()">
         <v-list  density="compact" nav>
-          <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" ></v-list-item>
+          <v-list-item title="Gestionar Productos" value="home" prepend-icon="mdi-home" to="/dashboard/gestionar-producto"></v-list-item>
 
-          <v-list-item title="Materia Prima" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
+          <v-list-item to="/dashboard/reque-materia-prima" title="Materia Prima" value="contacts" prepend-icon="mdi-contacts"></v-list-item>
 
           <v-list-item title="Inventario" value="settings" prepend-icon="mdi-cog"></v-list-item>
         </v-list>
@@ -108,18 +99,24 @@
           <v-list-item v-if="role === 'Jefe de Planta'" title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" to="/dashboard/autorizar-produccion"></v-list-item>
 
           <v-list-item v-if="role === 'Jefe de Planta'" title="Consultar Lista Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion" ></v-list-item>
-
+          <v-list-item v-if="role === 'Jefe de Planta'" title="Gestionar Clientes" value="gestionarCliente" prepend-icon="mdi-format-list-group" to="/dashboard/gestionar-clientes" ></v-list-item>
           <!--Jefe de Produccion-->
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Planta'" to="/dashboard/ver-pedidos" title="Ver Pedidos" value="verPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-plan-produccion" title="Planificar Produccion" value="pProduccion" prepend-icon="mdi-calendar"></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-orden-trabajo" title="Gestionar Orden de Trabajo" value="gOrdenTrabajo" prepend-icon="mdi-network-pos"></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-receta" title="Visualizar Recetas" value="vRecetas" prepend-icon="mdi-chef-hat" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/visualizar-historico" title="Visualizar Historico" value="vHistorico" prepend-icon="mdi-history" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-planta" title="Gestionar Planta" value="gestionarPlanta" prepend-icon="mdi-factory" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/consultar-stock" title="Consultar Stock" value="cStock" prepend-icon="mdi-list-status" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/consultar-reporte-merma" title="Consultar Reporte de Merma" value="cReporteMerma" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-almacenes" title="Gestionar Almacenes" value="gAlmacenes" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
+          <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-almacenes-productos" title="Productos en Almacenes" value="gAlmacenes" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
 
           <!--Encargado de Produccion-->
-          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/materia-prima" title="Materia Prima" value="mPrima" prepend-icon="mdi-food-steak" ></v-list-item>
+          <!-- <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/gestionar-orden-trabajo" title="Ordenes de Trabajo" value="oTrabajo" prepend-icon="mdi-format-indent-decrease" ></v-list-item> -->
+          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/reque-materia-prima" title="Materia Prima" value="mPrima" prepend-icon="mdi-food-steak" ></v-list-item>
           <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/productos-terminados" title="Productos Terminados" value="pTerminados" prepend-icon="mdi-package-variant-closed-check" ></v-list-item>
-          <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/registrar-merma" title="Registrar Merma" value="rMerma" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
         </v-list>
       </v-navigation-drawer>
 
@@ -130,56 +127,45 @@
     <!----Barra de navegcion----->
     <!--------------------------->
     <!--------------------------->
-    <div style="max-width: 1200px; margin: 0 auto;">
 
-    <v-app-bar app class="px-sm text-left shadow-sm ma-4 rounded-lg" flat height="75" style="max-width:
-    1100px; margin: 0 auto;">
+
+    <v-app-bar :elevation="2" rounded dense
+      floating>
       <v-app-bar-nav-icon
           v-ripple="{ class: 'primary--text' }"
           @click.stop="drawer1 = !drawer1"
       />
       <v-toolbar-title style="font-weight:400; color: #757575">RISACMP</v-toolbar-title>
       <v-spacer />
-      <v-badge
-        bordered
-        overlap
-        color="red"
-        offset-x="22"
-        offset-y="22"
-      >
-        <v-btn icon @click="notificationDrawer = !notificationDrawer">
-          <v-icon>mdi-bell</v-icon>
-        </v-btn>
-      </v-badge>
+
+
 
       <v-btn icon @click="searchDrawer = !searchDrawer">
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
+      <!---->
+      <MenuNotificacion/>
+      <MenuUser/>
 
-      <v-chip
-        pill
-        class="transparent rounded-pill py-6"
-        @click="userDrawer = !userDrawer"
-      >
-        Hola, {{ nombres }}
-        <v-avatar class="ml-2">
-          <v-img src="../assets/user.png"></v-img>
-        </v-avatar>
-      </v-chip>
-      <v-divider :thickness="20" class="border-opacity-0" vertical></v-divider>
+
     </v-app-bar>
-  </div>
-  </div>
-      <v-main class="d-flex align-center justify-center">
-        <router-view/>
-        <template>
-      </template>
+
+
+
+      <v-main class="d-flex align-center justify-center" style="min-height: 300px;min-height: 600px;">
+
+          <router-view/>
+
+
       </v-main>
+
+
+
 
 
     </v-layout>
   </v-app>
-</div>
+
 </template>
 
 
@@ -190,9 +176,6 @@ import { computed } from 'vue';
 import { onMounted } from 'vue';
 import jwt_decode from 'jwt-decode'; // Importa la librería para decodificar el token JWT
 const userStore = useUserStore();
-
-// Define referencias reactivas para username y role
-// const user = computed(() => userStore.user.username);
 const role = computed(() => userStore.user.role);
 const nombres=computed(()=> userStore.user.nombres);
 const apellidos=computed(()=>userStore.user.apellidos);
@@ -218,6 +201,7 @@ const drawer2=ref(false);
 const drawerProduccion=ref(false)
 
 import { useRouter } from 'vue-router';
+// import AppFooter from '@/components/AppFooter.vue';
 
 const router = useRouter();
 
