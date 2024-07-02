@@ -99,7 +99,7 @@
           <v-list-item v-if="role === 'Jefe de Planta'" title="Autorizar Produccion" value="autorizarProd" prepend-icon="mdi-package-variant-closed-check" to="/dashboard/autorizar-produccion"></v-list-item>
 
           <v-list-item v-if="role === 'Jefe de Planta'" title="Consultar Lista Produccion" value="consultarProd" prepend-icon="mdi-format-list-group" to="/dashboard/consultar-list-produccion" ></v-list-item>
-          <v-list-item v-if="role === 'Jefe de Planta'" title="Gestionar Clientes" value="gestionarCliente" prepend-icon="mdi-format-list-group" to="/dashboard/gestionar-clientes" ></v-list-item> 
+          <v-list-item v-if="role === 'Jefe de Planta'" title="Gestionar Clientes" value="gestionarCliente" prepend-icon="mdi-format-list-group" to="/dashboard/gestionar-clientes" ></v-list-item>
           <!--Jefe de Produccion-->
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-pedidos" title="Pedidos" value="vPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Planta'" to="/dashboard/ver-pedidos" title="Ver Pedidos" value="verPedidos" prepend-icon="mdi-notebook-check" ></v-list-item>
@@ -112,7 +112,7 @@
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/consultar-reporte-merma" title="Consultar Reporte de Merma" value="cReporteMerma" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-almacenes" title="Gestionar Almacenes" value="gAlmacenes" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
           <v-list-item v-if="role === 'Jefe de Produccion'" to="/dashboard/gestionar-almacenes-productos" title="Productos en Almacenes" value="gAlmacenes" prepend-icon="mdi-format-indent-decrease" ></v-list-item>
-          
+
           <!--Encargado de Produccion-->
           <!-- <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/gestionar-orden-trabajo" title="Ordenes de Trabajo" value="oTrabajo" prepend-icon="mdi-format-indent-decrease" ></v-list-item> -->
           <v-list-item v-if="role === 'Encargado de Produccion'" to="/dashboard/materia-prima" title="Materia Prima" value="mPrima" prepend-icon="mdi-food-steak" ></v-list-item>
@@ -147,21 +147,21 @@
       <MenuNotificacion/>
       <MenuUser/>
 
-      
+
     </v-app-bar>
 
 
-      
+
       <v-main class="d-flex align-center justify-center" style="min-height: 300px;min-height: 600px;">
 
           <router-view/>
-          
-    
-      </v-main>
-    
-    
 
-    
+
+      </v-main>
+
+
+
+
 
     </v-layout>
   </v-app>

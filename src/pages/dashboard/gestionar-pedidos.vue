@@ -6,9 +6,11 @@
           <div class="container-header-table">
             <v-text-field v-model="search" label="Buscar" prepend-inner-icon="mdi-magnify" variant="outlined"
               hide-details></v-text-field>
+              <v-divider :thickness="40" class="border-opacity-0" vertical></v-divider>
             <v-btn icon color="green darken-2" @click="dialogExportarPedidos = true">
               <v-icon>mdi-export</v-icon>
             </v-btn>
+            <v-divider :thickness="40" class="border-opacity-0" vertical></v-divider>
             <v-btn prepend-icon="mdi-plus" color="blue darken-2" @click="nuevoPedidoDialog = true">
               Registrar Pedido
             </v-btn>
@@ -20,7 +22,7 @@
             <v-icon @click="abrirDialogoEditarPedido(item)" class="mr-2">mdi-pencil</v-icon>
             <v-icon @click="verDetallePedido(item)" class="mr-2">mdi-eye</v-icon>
           </template>
-          
+
         </v-data-table>
       </v-card>
 
@@ -209,6 +211,7 @@ export default {
         { title: "Código de Pedido", value: "codigoPedido" },
         { title: "Nombre del Cliente", value: "nombreCliente" },
         { title: "Estado del Pedido", value: "estadoPedido" },
+        { title: "Observacion", value: "observacion" },
         { title: "Acciones", value: "actions", sortable: false },
       ],
       nuevoPedidoDialog: false,
